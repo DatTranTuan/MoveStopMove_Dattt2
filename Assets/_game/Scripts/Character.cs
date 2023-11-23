@@ -17,6 +17,7 @@ public class Character : MonoBehaviour
     protected Transform nearEnemy;
     protected Vector3 direc;
 
+    protected WeaponData weaponData;
     protected int targetCount;
     protected float circleRadius = 4f;
     protected bool isDelay;
@@ -93,6 +94,8 @@ public class Character : MonoBehaviour
         else
         {
             // if pool doesn't have any bullet then it will spawn
+            Debug.Log(bulletPrefab == null);
+            Debug.Log(firePos == null);
             spawnBullet = Instantiate(bulletPrefab, firePos.position, firePos.rotation);
         }
         Bullet bulletOjb = spawnBullet.GetComponent<Bullet>();
@@ -170,5 +173,10 @@ public class Character : MonoBehaviour
     protected void OnHitTarget(Character target)
     {
         OnTargetExit(target);
+    }
+
+    public void SpawnWeapon()
+    {
+        Instantiate(weaponData.weapon, firePos);
     }
 }

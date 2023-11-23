@@ -49,22 +49,4 @@ public class Bullet : MonoBehaviour
         onHitTarget?.Invoke(target);
     } 
 
-    //private void OnEnable()
-    //{
-    //    transform.GetComponent<Rigidbody>().WakeUp();
-    //    Invoke("HideBullet", 2.0f);
-    //}
-
-    //private void OnDisable()
-    //{
-    //    transform.GetComponent<Rigidbody>().Sleep();
-    //    CancelInvoke();
-    //}
-
-    //private void HideBullet()
-    //{
-    //    gameObject.SetActive(false);
-    //}
-
-   
 }

@@ -137,8 +137,8 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  bulletPrefab: {fileID: 7980232791908905369, guid: 50ec1ffe77966cd448822d9dca28f6d4, type: 3}
-  bulletSpawn: {fileID: 7980232791908905369, guid: 50ec1ffe77966cd448822d9dca28f6d4, type: 3}
+  bulletPrefab: {fileID: 2237678105326349739, guid: 50ec1ffe77966cd448822d9dca28f6d4, type: 3}
+  bulletSpawn: {fileID: 2237678105326349739, guid: 50ec1ffe77966cd448822d9dca28f6d4, type: 3}
   firePos: {fileID: 2268296584382044665}
   agent: {fileID: 4124261032544131632}
   botPrefab: {fileID: 7587256198763046198}

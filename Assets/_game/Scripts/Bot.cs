@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 
 public class Bot : Character
 {
+    private WeaponType currentWeaponType;
+
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Bot botPrefab;
 
@@ -18,6 +20,21 @@ public class Bot : Character
 
     private float wanderRadius = 4f;
     private IState currentState;
+
+    private void Start()
+    {
+        OnInit();
+        SpawnWeapon();
+    }
+
+    public void OnInit()
+    {
+        if (weaponData == null)
+        {
+            currentWeaponType = WeaponType.Axe;
+            weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
+        }
+    }
 
     protected void Update()
     {
@@ -62,6 +79,7 @@ public class Bot : Character
         else
         {
             Instantiate(botPrefab, randomPos, Quaternion.identity);
+            OnInit();
         }
     }
 
