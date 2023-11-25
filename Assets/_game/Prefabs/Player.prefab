@@ -234,9 +234,8 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  bulletPrefab: {fileID: -7674789561874398295, guid: da36f7c65120d174191c7389ca92227c, type: 3}
-  bulletSpawn: {fileID: -7674789561874398295, guid: da36f7c65120d174191c7389ca92227c, type: 3}
   firePos: {fileID: 5250431924574045258}
+  rb: {fileID: 6585213529387026720}
 --- !u!95 &5780027371570162325
 Animator:
   serializedVersion: 5

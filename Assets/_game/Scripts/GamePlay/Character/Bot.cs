@@ -9,7 +9,7 @@ public class Bot : Character
 {
     private WeaponType currentWeaponType;
 
-    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] public NavMeshAgent agent;
     [SerializeField] private Bot botPrefab;
 
     public static Stack<Bot> stack = new Stack<Bot>();
@@ -34,6 +34,11 @@ public class Bot : Character
             currentWeaponType = WeaponType.Axe;
             weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         }
+
+        if (bullet == null)
+        {
+            bullet = weaponData.bullet;
+        }
     }
 
     protected void Update()
@@ -48,6 +53,7 @@ public class Bot : Character
     {
         randomPos = new Vector3(UnityEngine.Random.Range(-10, 11), 0, UnityEngine.Random.Range(-9, 10));
         IsAttack = false;
+        SetBoolAnimation();
         ChangeState(new IdleState());
     }
 

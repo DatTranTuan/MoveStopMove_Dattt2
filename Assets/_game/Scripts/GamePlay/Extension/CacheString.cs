@@ -14,4 +14,8 @@ public class CacheString : MonoBehaviour
     public static string BULLET_TAG = "Bullet";
     public static string PLAYER_TAG = "Player";
     public static string ENEMY_TAG = "Enemy";
+
+    public static int BOT_LAYER = 3;
+    public static int PLAYER_LAYER = 3;
+    public static int RADAR_LAYER = 7;
 }

@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Player : Character
 {
+    [SerializeField] private Rigidbody rb;
+
     private WeaponType currentWeaponType;
 
-    private AxeWeapon axeWeapon;
     private Joystick joystick;
-    private Rigidbody rb;
     private Player player;
 
     //private override WeaponData weaponData;
@@ -20,7 +20,6 @@ public class Player : Character
         currentWeaponType = WeaponType.Hammer;
         player = LevelManager.Instance.player;
         joystick = JoystickManager.Instance._joystick;
-        rb = player.GetComponent<Rigidbody>();
     }
 
     public void OnInit()
@@ -29,9 +28,14 @@ public class Player : Character
         {
             weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         }
+
+        if (bullet == null)
+        {
+            bullet = weaponData.bullet;
+        }
     }
 
-    protected override void FixedUpdate()
+    protected void FixedUpdate()
     {
         if (isMoving == true)
         {
@@ -43,13 +47,14 @@ public class Player : Character
             {
                 transform.rotation = Quaternion.LookRotation(rb.velocity);
                 IsIdle = false;
+                SetBoolAnimation();
             }
             else
             {
                 IsIdle = true;
+                SetBoolAnimation();
             }
         }
-        base.FixedUpdate();
     }
 
     //public void SpawnWeapon()

@@ -12,6 +12,7 @@ public class MoveState : IState
     public void OnEnter(Bot bot)
     {
         bot.IsIdle = false;
+        bot.SetBoolAnimation();
         bot.SetDirection();
     }
 

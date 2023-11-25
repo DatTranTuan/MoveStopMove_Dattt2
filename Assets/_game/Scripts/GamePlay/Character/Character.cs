@@ -7,9 +7,9 @@ public class Character : MonoBehaviour
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected Animator animator;
     [SerializeField] protected LayerMask enemyLayerMask;
-    [SerializeField] protected Bullet bulletPrefab;
-    [SerializeField] protected Bullet bulletSpawn;
     [SerializeField] protected Transform firePos;
+
+    protected bool CanAttack => !isAttack && isIdle == true && mainTarget != null;
 
     protected Character mainTarget;
     protected List<Character> otherTarget = new List<Character>();
@@ -18,6 +18,7 @@ public class Character : MonoBehaviour
     protected Vector3 direc;
 
     protected WeaponData weaponData;
+    protected Bullet bullet;
     protected int targetCount;
     protected float circleRadius = 4f;
     protected bool isDelay;
@@ -32,12 +33,7 @@ public class Character : MonoBehaviour
     public bool IsIdle { get => isIdle; set => isIdle = value; }
     public Animator Animator { get => animator; set => animator = value; }
 
-    protected virtual void FixedUpdate()
-    {
-        SetBoolAnimation();
-    }
-
-    protected void SetBoolAnimation()
+    public void SetBoolAnimation()
     {
         animator.SetBool(CacheString.ATTACK_ANIMATION, isAttack);
         animator.SetBool(CacheString.IDLE_ANIMATION, isIdle);
@@ -45,17 +41,13 @@ public class Character : MonoBehaviour
 
     public void Attack()
     {
-        if (!isAttack && isIdle == true && mainTarget != null)
+        if (CanAttack)
         {
             transform.LookAt(mainTarget.transform.position);
             isAttack = true;
-            StartCoroutine(DelayBeforeAttack(0.35f));
+            SetBoolAnimation();
+            StartCoroutine(DelayBeforeAttack(0.20f));
         }
-        //else
-        //{
-        //    IsAttack = false;
-        //    Animator.SetBool("IsAttack", IsAttack);
-        //}
     }
 
     protected IEnumerator DelayBeforeAttack(float delayTime)
@@ -69,6 +61,7 @@ public class Character : MonoBehaviour
         Fire();
         yield return new WaitForSeconds(delayTime);
         isAttack = false;
+        SetBoolAnimation();
     }
 
     public void Fire()
@@ -94,13 +87,10 @@ public class Character : MonoBehaviour
         else
         {
             // if pool doesn't have any bullet then it will spawn
-            Debug.Log(bulletPrefab == null);
-            Debug.Log(firePos == null);
-            spawnBullet = Instantiate(bulletPrefab, firePos.position, firePos.rotation);
+            spawnBullet = Instantiate(bullet, firePos.position, firePos.rotation);
         }
-        Bullet bulletOjb = spawnBullet.GetComponent<Bullet>();
         direc.y = 0f;
-        bulletOjb.Init(direc, this, OnHitTarget);
+        spawnBullet.Init(direc, this, OnHitTarget);
     }
 
     protected void OnTriggerEnter(Collider other)
@@ -111,7 +101,7 @@ public class Character : MonoBehaviour
             Bot bot = GetComponent<Bot>();
             if (bullet.Attacker != this)
             {
-                bullet.OnHitTarget(this);
+                bullet.OnHitTarget(this, bullet);
                 //Destroy(this.gameObject);
                 this.gameObject.SetActive(false);
                 bullet.ReturnToPool();
@@ -131,7 +121,7 @@ public class Character : MonoBehaviour
 
     protected void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == 3 || other.gameObject.layer == 6)
+        if (other.gameObject.layer == CacheString.BOT_LAYER || other.gameObject.layer == CacheString.PLAYER_LAYER)
         {
             Character target = other.GetComponent<Character>();
             OnTargetExit(target);
@@ -170,8 +160,9 @@ public class Character : MonoBehaviour
         }
     }
 
-    protected void OnHitTarget(Character target)
+    protected void OnHitTarget(Character target, Bullet bullet)
     {
+        bullet.ReturnToPool();
         OnTargetExit(target);
     }
 

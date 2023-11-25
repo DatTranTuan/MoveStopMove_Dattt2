@@ -6,7 +6,7 @@ public class AttackState : IState
 {
     public void OnEnter(Bot bot)
     {
-        Debug.Log("attackstate");
+        bot.agent.ResetPath();
     }
 
     public void OnExecute(Bot bot)

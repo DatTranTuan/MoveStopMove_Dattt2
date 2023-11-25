@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
 
     private Character attacker;
     private Vector3 direction;
-    private Action<Character> onHitTarget;
+    private Action<Character, Bullet> onHitTarget;
 
     public static Stack<Bullet> stack = new Stack<Bullet>();
 
@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void Init(Vector3 direction, Character attacker, Action<Character> callBack)
+    public void Init(Vector3 direction, Character attacker, Action<Character, Bullet> callBack)
     {
         Invoke(nameof(ReturnToPool), 1f);
         onHitTarget = callBack;
@@ -44,9 +44,9 @@ public class Bullet : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void OnHitTarget(Character target)
+    public void OnHitTarget(Character victim,Bullet bullet)
     {
-        onHitTarget?.Invoke(target);
+        onHitTarget?.Invoke(victim, bullet);
     } 
 
 }
