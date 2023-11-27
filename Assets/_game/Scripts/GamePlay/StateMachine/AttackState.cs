@@ -12,6 +12,7 @@ public class AttackState : IState
     public void OnExecute(Bot bot)
     {
         bot.Attack();
+        bot.agent.ResetPath();
         if (!bot.HasTarget)
         {
             bot.ChangeState(new IdleState());

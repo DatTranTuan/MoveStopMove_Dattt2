@@ -17,7 +17,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void SpawnPlayer()
     {
-        player = Instantiate(playerPrefab, startPoint.position, Quaternion.identity);
+        player = Instantiate(playerPrefab, new Vector3(startPoint.position.x, 0, startPoint.position.y), Quaternion.identity);
         player.OnInit();
     }
 

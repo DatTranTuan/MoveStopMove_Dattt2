@@ -26,6 +26,7 @@ public class Character : MonoBehaviour
     protected bool isDelay;
     private bool isIdle;
     private bool isAttack = false;
+    private bool isDead;
 
     protected float bulletSpeed = 500f;
     protected List<Bullet> bulletList = new List<Bullet>();
@@ -33,11 +34,13 @@ public class Character : MonoBehaviour
     public bool IsAttack { get => isAttack; set => isAttack = value; }
     public bool IsIdle { get => isIdle; set => isIdle = value; }
     public Animator Animator { get => animator; set => animator = value; }
+    public bool IsDead { get => isDead; set => isDead = value; }
 
     public void SetBoolAnimation()
     {
         animator.SetBool(CacheString.ATTACK_ANIMATION, isAttack);
         animator.SetBool(CacheString.IDLE_ANIMATION, isIdle);
+        animator.SetBool(CacheString.DEAD_ANIMATION, isDead);
     }
 
     public void Attack()

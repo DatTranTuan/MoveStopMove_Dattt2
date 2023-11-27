@@ -9,7 +9,7 @@ public class Player : Character
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject targetPoint;
 
-    private WeaponType currentWeaponType = WeaponType.Axe;
+    private WeaponType currentWeaponType = WeaponType.Hammer;
 
     private Joystick joystick;
     private Player player;
@@ -62,6 +62,14 @@ public class Player : Character
         {
             targetPoint.SetActive(false);
         }
+    }
+
+    public void OnDeath()
+    {
+        IsDead = true;
+        IsAttack = false;
+        IsIdle = false;
+        SetBoolAnimation();
     }
 
     //public void SpawnWeapon()

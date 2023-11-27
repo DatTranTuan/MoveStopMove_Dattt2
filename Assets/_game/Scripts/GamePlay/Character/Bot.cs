@@ -11,6 +11,8 @@ public class Bot : Character
 
     [SerializeField] public NavMeshAgent agent;
     [SerializeField] private Bot botPrefab;
+    //[SerializeField] private GameObject indicator;
+    //[SerializeField] private MeshRenderer meshRenderer;
 
     public static Stack<Bot> stack = new Stack<Bot>();
     public bool isTarget => Vector3.Distance(transform.position, newPos) < 0.1f;
@@ -20,11 +22,13 @@ public class Bot : Character
     private Vector3 newPos;
     private Vector3 randomPos;
 
+    private Player player;
     private float wanderRadius = 20f;
     private IState currentState;
 
     private void Start()
     {
+        player = LevelManager.Instance.player;
         currentWeaponType = WeaponType.Axe;
         weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         OnInit();
@@ -48,7 +52,6 @@ public class Bot : Character
 
     protected void Update()
     {
-        Debug.Log(currentState);
         if (currentState != null)
         {
             currentState.OnExecute(this);
@@ -78,6 +81,34 @@ public class Bot : Character
         }
     }
 
+    //private void CheckIndicator()
+    //{
+    //    if (meshRenderer.isVisible)
+    //    {
+    //        if (indicator.activeSelf == false)
+    //        {
+    //            indicator.SetActive(true);
+    //        }
+
+    //        Vector3 direction = player.transform.position - transform.position;
+
+    //        RaycastHit ray;
+
+    //        if (Physics.Raycast(transform.position, direction, out ray))
+    //        {
+    //            indicator.transform.position = ray.point;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (indicator.activeSelf == true)
+    //        {
+    //            indicator.SetActive(false);
+    //        }
+    //    }
+
+    //}
+
     private void SpawnBot()
     {
         if (stack.Count > 0)
@@ -97,6 +128,7 @@ public class Bot : Character
 
     public void ReturnToPool()
     {
+        agent.ResetPath();
         stack.Push(this);
         this.gameObject.SetActive(false);
         this.mainTarget = null;
@@ -104,12 +136,29 @@ public class Bot : Character
         SpawnBot();
     }
 
+    public IEnumerator OnDeath()
+    {
+        agent.ResetPath();
+        IsDead = true;
+        IsAttack = false;
+        IsIdle = false;
+        SetBoolAnimation();
+        yield return new WaitForSeconds(2f);
+        IsDead = false;
+        agent.ResetPath();
+        ReturnToPool();
+    }
+
+    public void DelayDead()
+    {
+        StartCoroutine(OnDeath());
+    }
+
     public void SetDirection()
     {
         newPos = RandomNavSphere(transform.position, wanderRadius, -1);
         newPos.y = transform.position.y;
         moveDirection = (newPos - transform.position).normalized;
-        Debug.Log(newPos);
         agent.SetDestination(newPos);
     }
 
