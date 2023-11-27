@@ -15,14 +15,18 @@ public class Bot : Character
     public static Stack<Bot> stack = new Stack<Bot>();
     public bool isTarget => Vector3.Distance(transform.position, newPos) < 0.1f;
 
+    public Vector3 moveDirection;
+
     private Vector3 newPos;
     private Vector3 randomPos;
 
-    private float wanderRadius = 4f;
+    private float wanderRadius = 20f;
     private IState currentState;
 
     private void Start()
     {
+        currentWeaponType = WeaponType.Axe;
+        weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         OnInit();
         SpawnWeapon();
     }
@@ -31,6 +35,7 @@ public class Bot : Character
     {
         if (weaponData == null)
         {
+            Debug.Log(currentWeaponType);
             currentWeaponType = WeaponType.Axe;
             weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         }
@@ -43,6 +48,7 @@ public class Bot : Character
 
     protected void Update()
     {
+        Debug.Log(currentState);
         if (currentState != null)
         {
             currentState.OnExecute(this);
@@ -102,6 +108,8 @@ public class Bot : Character
     {
         newPos = RandomNavSphere(transform.position, wanderRadius, -1);
         newPos.y = transform.position.y;
+        moveDirection = (newPos - transform.position).normalized;
+        Debug.Log(newPos);
         agent.SetDestination(newPos);
     }
 
@@ -119,4 +127,5 @@ public class Bot : Character
     }
 
     public bool HasTarget => mainTarget!= null;
+
 }

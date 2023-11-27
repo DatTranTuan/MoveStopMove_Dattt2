@@ -29,6 +29,7 @@ public class Bullet : MonoBehaviour
     {
         Invoke(nameof(ReturnToPool), 1f);
         onHitTarget = callBack;
+        this.transform.rotation = Quaternion.Euler(new Vector3 (-90,0,0));
         this.attacker = attacker;
         this.direction = direction;
         this.direction = this.direction.normalized;
@@ -42,6 +43,26 @@ public class Bullet : MonoBehaviour
         // set attacker = null to make Update stop 
         attacker = null;
         this.gameObject.SetActive(false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(CacheString.PLAYER_TAG) || other.CompareTag(CacheString.BOT_TAG))
+        {
+            Character character = other.GetComponent<Character>();
+            Debug.Log(character.gameObject.name);
+            if (this.Attacker != character)
+            {
+                //bullet.OnHitTarget(this, bullet);
+                this.gameObject.SetActive(false);
+                if (other.CompareTag(CacheString.BOT_TAG))
+                {
+                    Debug.Log("1");
+                    ((Bot)character).ReturnToPool();
+                }
+                OnHitTarget(character, this);
+            }
+        }
     }
 
     public void OnHitTarget(Character victim,Bullet bullet)

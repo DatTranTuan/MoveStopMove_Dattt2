@@ -19,16 +19,20 @@ public class MoveState : IState
     public void OnExecute(Bot bot)
     {
         timer += Time.deltaTime;
+        bot.transform.rotation = Quaternion.Slerp(bot.transform.rotation, Quaternion.LookRotation(bot.moveDirection), 0.1f);
+        //bot.transform.rotation = Quaternion.LookRotation(bot.moveDirection);
 
         if (bot.HasTarget)
         {
             bot.ChangeState(new IdleState());
+            bot.agent.ResetPath();
             return;
         }
 
         if (bot.isTarget)
         {
             //bot.IsIdle = false;
+            bot.agent.ResetPath();
             bot.ChangeState(new IdleState());
         }
 

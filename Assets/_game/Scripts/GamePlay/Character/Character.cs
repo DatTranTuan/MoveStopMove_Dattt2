@@ -11,6 +11,8 @@ public class Character : MonoBehaviour
 
     protected bool CanAttack => !isAttack && isIdle == true && mainTarget != null;
 
+    private Bot bot;
+
     protected Character mainTarget;
     protected List<Character> otherTarget = new List<Character>();
 
@@ -24,7 +26,6 @@ public class Character : MonoBehaviour
     protected bool isDelay;
     private bool isIdle;
     private bool isAttack = false;
-    protected bool isMoving = true;
 
     protected float bulletSpeed = 500f;
     protected List<Bullet> bulletList = new List<Bullet>();
@@ -46,7 +47,7 @@ public class Character : MonoBehaviour
             transform.LookAt(mainTarget.transform.position);
             isAttack = true;
             SetBoolAnimation();
-            StartCoroutine(DelayBeforeAttack(0.20f));
+            StartCoroutine(DelayBeforeAttack(0.25f));
         }
     }
 
@@ -72,7 +73,7 @@ public class Character : MonoBehaviour
         }
         else
         {
-            direc = mainTarget.transform.position - transform.position;
+            direc = mainTarget.transform.position - firePos.position;
         }
 
         // Shoot
@@ -95,21 +96,7 @@ public class Character : MonoBehaviour
 
     protected void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(CacheString.BULLET_TAG))
-        {
-            Bullet bullet = other.GetComponent<Bullet>();
-            Bot bot = GetComponent<Bot>();
-            if (bullet.Attacker != this)
-            {
-                bullet.OnHitTarget(this, bullet);
-                //Destroy(this.gameObject);
-                this.gameObject.SetActive(false);
-                bullet.ReturnToPool();
-                bot.ReturnToPool();
-            }
-        }
-
-        if (other.CompareTag(CacheString.ENEMY_TAG) || other.CompareTag(CacheString.PLAYER_TAG))
+        if (other.gameObject.layer == CacheString.CHARACTER_LAYER)
         {
             Character target = other.GetComponent<Character>();
             if (target != this)
@@ -121,14 +108,14 @@ public class Character : MonoBehaviour
 
     protected void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == CacheString.BOT_LAYER || other.gameObject.layer == CacheString.PLAYER_LAYER)
+        if (other.gameObject.layer == CacheString.CHARACTER_LAYER)
         {
             Character target = other.GetComponent<Character>();
             OnTargetExit(target);
         }
     }
 
-    protected void OnTargetEnter(Character target)
+    public void OnTargetEnter(Character target)
     {
         if (mainTarget is null)
         {
@@ -162,8 +149,8 @@ public class Character : MonoBehaviour
 
     protected void OnHitTarget(Character target, Bullet bullet)
     {
-        bullet.ReturnToPool();
         OnTargetExit(target);
+        bullet.ReturnToPool();
     }
 
     public void SpawnWeapon()
