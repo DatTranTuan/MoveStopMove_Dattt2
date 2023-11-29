@@ -21,3 +21,7 @@ MonoBehaviour:
     bullet: {fileID: -1445137797553807439, guid: 0d9e163597edb5946bc050a91763b0f0, type: 3}
     weapon: {fileID: 5500942322611564676, guid: ac0c6c8bd15f14844bacd996d9a67bb8, type: 3}
     range: 5
+  - weaponType: 1
+    bullet: {fileID: 6858159886126046918, guid: 70b568601bd00784485acd390dd0ab3b, type: 3}
+    weapon: {fileID: -5443571661867929174, guid: 486c26d1214015d44a1c7419008b33d2, type: 3}
+    range: 5

@@ -22,15 +22,13 @@ public class Bot : Character
     private Vector3 newPos;
     private Vector3 randomPos;
 
-    private Player player;
     private float wanderRadius = 20f;
     private IState currentState;
 
     private void Start()
     {
-        player = LevelManager.Instance.player;
-        currentWeaponType = WeaponType.Axe;
-        weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
+        //currentWeaponType = WeaponType.Axe;
+        //weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         OnInit();
         SpawnWeapon();
     }
@@ -39,7 +37,6 @@ public class Bot : Character
     {
         if (weaponData == null)
         {
-            Debug.Log(currentWeaponType);
             currentWeaponType = WeaponType.Axe;
             weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         }
@@ -52,9 +49,12 @@ public class Bot : Character
 
     protected void Update()
     {
-        if (currentState != null)
+        if (isPlayAble)
         {
-            currentState.OnExecute(this);
+            if (currentState != null)
+            {
+                currentState.OnExecute(this);
+            }
         }
     }
 
@@ -139,6 +139,7 @@ public class Bot : Character
     public IEnumerator OnDeath()
     {
         agent.ResetPath();
+        isPlayAble = false;
         IsDead = true;
         IsAttack = false;
         IsIdle = false;
@@ -175,6 +176,6 @@ public class Bot : Character
         return navHit.position;
     }
 
-    public bool HasTarget => mainTarget!= null;
+    public bool HasTarget => mainTarget != null;
 
 }

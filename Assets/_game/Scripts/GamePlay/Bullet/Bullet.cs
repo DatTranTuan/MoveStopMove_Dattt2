@@ -61,7 +61,7 @@ public class Bullet : MonoBehaviour
 
                 if (other.CompareTag(CacheString.PLAYER_TAG))
                 {
-                    ((Player)character).OnDeath();
+                    //((Player)character).OnDeath();
                 }
 
                 Attacker.gameObject.transform.localScale += new Vector3(Attacker.transform.localScale.x * 0.04f, Attacker.transform.localScale.y * 0.04f, Attacker.transform.localScale.z * 0.04f);

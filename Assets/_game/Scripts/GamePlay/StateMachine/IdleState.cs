@@ -8,6 +8,7 @@ public class IdleState : IState
 
     public void OnEnter(Bot bot)
     {
+        bot.IsPlayAble = true;
         bot.IsIdle = true;
         bot.SetBoolAnimation();
     }

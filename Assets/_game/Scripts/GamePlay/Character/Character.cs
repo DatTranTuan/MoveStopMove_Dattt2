@@ -24,6 +24,7 @@ public class Character : MonoBehaviour
     protected int targetCount;
     protected float circleRadius = 4f;
     protected bool isDelay;
+    protected bool isPlayAble = true;
     private bool isIdle;
     private bool isAttack = false;
     private bool isDead;
@@ -35,6 +36,7 @@ public class Character : MonoBehaviour
     public bool IsIdle { get => isIdle; set => isIdle = value; }
     public Animator Animator { get => animator; set => animator = value; }
     public bool IsDead { get => isDead; set => isDead = value; }
+    public bool IsPlayAble { get => isPlayAble; set => isPlayAble = value; }
 
     public void SetBoolAnimation()
     {
