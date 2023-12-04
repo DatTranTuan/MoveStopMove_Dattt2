@@ -6,7 +6,7 @@ public class JoystickManager : MonoBehaviour
 {
     public static JoystickManager Instance;
 
-    public FixedJoystick _joystick;
+    public DynamicJoystick _joystick;
 
     private void Awake()
     {

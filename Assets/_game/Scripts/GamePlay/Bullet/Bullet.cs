@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lean.Pool;
 
 public class Bullet : MonoBehaviour
 {
@@ -11,8 +12,6 @@ public class Bullet : MonoBehaviour
     private Character attacker;
     private Vector3 direction;
     private Action<Character, Bullet> onHitTarget;
-
-    public static Stack<Bullet> stack = new Stack<Bullet>();
 
     public Character Attacker { get => attacker;}
 
@@ -39,7 +38,7 @@ public class Bullet : MonoBehaviour
     public void ReturnToPool()
     {
         // return bullet to pool
-        stack.Push(this);
+        //LeanPool.Despawn(this.gameObject);
         // set attacker = null to make Update stop 
         attacker = null;
         this.gameObject.SetActive(false);
@@ -57,11 +56,14 @@ public class Bullet : MonoBehaviour
                 if (other.CompareTag(CacheString.BOT_TAG))
                 {
                     ((Bot)character).DelayDead();
+                    LeanPool.Despawn(this.gameObject);
                 }
 
                 if (other.CompareTag(CacheString.PLAYER_TAG))
                 {
-                    //((Player)character).OnDeath();
+                    ((Player)character).OnDeath();
+                    LeanPool.Despawn(this.gameObject);
+                    UIManager.Instance.OnLoseUI();
                 }
 
                 Attacker.gameObject.transform.localScale += new Vector3(Attacker.transform.localScale.x * 0.04f, Attacker.transform.localScale.y * 0.04f, Attacker.transform.localScale.z * 0.04f);

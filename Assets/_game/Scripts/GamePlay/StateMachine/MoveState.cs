@@ -20,14 +20,6 @@ public class MoveState : IState
     {
         timer += Time.deltaTime;
         bot.transform.rotation = Quaternion.Slerp(bot.transform.rotation, Quaternion.LookRotation(bot.moveDirection), 0.1f);
-        //bot.transform.rotation = Quaternion.LookRotation(bot.moveDirection);
-
-        if (bot.HasTarget)
-        {
-            bot.ChangeState(new IdleState());
-            bot.agent.ResetPath();
-            return;
-        }
 
         if (bot.isTarget)
         {

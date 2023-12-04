@@ -11,6 +11,8 @@ public class Bot : Character
 
     [SerializeField] public NavMeshAgent agent;
     [SerializeField] private Bot botPrefab;
+    [SerializeField] private HUDIndicator.IndicatorOffScreen offScreen;
+
     //[SerializeField] private GameObject indicator;
     //[SerializeField] private MeshRenderer meshRenderer;
 
@@ -45,6 +47,9 @@ public class Bot : Character
         {
             bullet = weaponData.bullet;
         }
+
+        IsAlive = true;
+        offScreen.SetRenderer(Check.Instance.indicatorRenderer);
     }
 
     protected void Update()
@@ -117,6 +122,7 @@ public class Bot : Character
             spawnBot = stack.Pop();
             spawnBot.gameObject.SetActive(true);
             spawnBot.gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-10, 11), 0, UnityEngine.Random.Range(-9, 10));
+            IsAlive = true;
             agent.ResetPath();
         }
         else
@@ -138,6 +144,7 @@ public class Bot : Character
 
     public IEnumerator OnDeath()
     {
+        IsAlive = false;
         agent.ResetPath();
         isPlayAble = false;
         IsDead = true;

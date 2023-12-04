@@ -11,6 +11,8 @@ public class CacheString : MonoBehaviour
     public static string DANCE_ANIMATION;
     public static string ULTI_ANIMATION;
 
+    public static string SCENE_NAME = "SampleScene";
+
     public static string BULLET_TAG = "Bullet";
     public static string PLAYER_TAG = "Player";
     public static string BOT_TAG = "Bot";

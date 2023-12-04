@@ -9,48 +9,51 @@ public class Player : Character
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject targetPoint;
 
-    private WeaponType currentWeaponType = WeaponType.Hammer;
+    private WeaponType currentWeaponType;
 
     private Joystick joystick;
     private Player player;
 
+    public WeaponType CurrentWeaponType { get => currentWeaponType; set => currentWeaponType = value; }
+
     private void Start()
     {
-        SpawnWeapon();
         player = LevelManager.Instance.player;
         joystick = JoystickManager.Instance._joystick;
     }
 
     public void OnInit()
     {
+        IsAlive = true;
+        CurrentWeaponType = WeaponType.Hammer;
         if (weaponData == null)
         {
-            weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
+            weaponData = DataManager.Instance.GetWeaponData(CurrentWeaponType);
         }
-
-        if (bullet == null)
-        {
-            bullet = weaponData.bullet;
-        }
+        SpawnWeapon();
+        bullet = weaponData.bullet;
     }
 
     protected void FixedUpdate()
     {
         if (isPlayAble)
         {
-
-            Attack();
-
             rb.velocity = new Vector3(joystick.Horizontal * moveSpeed, rb.velocity.y, joystick.Vertical /*0*/ * moveSpeed);
             // joystick vertical > => joystick = 0
             if (joystick.Horizontal != 0 || joystick.Vertical != 0)
             {
-                //transform.rotation = Quaternion.LookRotation(rb.velocity);
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.velocity), 0.2f);
+                StopAllCoroutines();
                 IsIdle = false;
                 SetBoolAnimation();
+                //transform.rotation = Quaternion.LookRotation(rb.velocity);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rb.velocity), 0.2f);
+
+                if (IsAttack)
+                {
+                    ResetAttack();
+                }
             }
-            else
+            else if (!IsAttack)
             {
                 IsIdle = true;
                 SetBoolAnimation();
@@ -58,6 +61,7 @@ public class Player : Character
 
             if (mainTarget != null)
             {
+                Attack();
                 targetPoint.transform.position = mainTarget.transform.position + Vector3.down;
                 targetPoint.SetActive(true);
             }
@@ -70,6 +74,7 @@ public class Player : Character
 
     public void OnDeath()
     {
+        IsAlive = false;
         IsDead = true;
         IsAttack = false;
         IsIdle = false;

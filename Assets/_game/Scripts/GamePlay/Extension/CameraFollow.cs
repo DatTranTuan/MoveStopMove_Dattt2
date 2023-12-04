@@ -1,26 +1,35 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollow : Singleton<CameraFollow>
 {
-    [SerializeField] private float smoothTime;
+    [SerializeField] private GameObject cam;
+    [SerializeField] private CinemachineBrain brain;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
-    private Vector3 targetPos;
     private Player player;
-
-    private Vector3 offset;
-    private Vector3 currentVelocity = Vector3.zero;
+    //private int time = 20;
+    //private int timePlus = 100;
 
     private void Start()
     {
         player = LevelManager.Instance.player;
-        offset = transform.position - player.transform.position;
+        virtualCamera.Follow = player.transform;
+        virtualCamera.LookAt = player.transform;
+        virtualCamera.m_Lens.FieldOfView = 20;
+        cam.transform.rotation = Quaternion.Euler(20f, 0f, 0f);
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        Vector3 targetPosition = player.transform.position + offset;
-        transform.position = Vector3.Lerp(transform.position, targetPosition, smoothTime);
+        
+    }
+
+    public void SmoothCameraChange()
+    {
+        cam.transform.rotation = Quaternion.Euler(31f, 0f, 0f);
+        virtualCamera.m_Lens.FieldOfView = 100;
     }
 }

@@ -5,6 +5,13 @@ using UnityEngine;
 public class DataManager : Singleton<DataManager>
 {
     public WeaponDataSO weaponDataSO;
+    public List<WeaponData> listWeaponData;
+
+    private void Awake()
+    {
+        listWeaponData = weaponDataSO.listWeaponData;  
+    }
+
     public WeaponData GetWeaponData(WeaponType weaponType)
     {
         List<WeaponData> weapons = weaponDataSO.listWeaponData;

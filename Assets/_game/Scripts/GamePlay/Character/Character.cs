@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lean.Pool;
 
 public class Character : MonoBehaviour
 {
@@ -25,9 +26,12 @@ public class Character : MonoBehaviour
     protected float circleRadius = 4f;
     protected bool isDelay;
     protected bool isPlayAble = true;
+    protected Weapon weponSpawn;
+
     private bool isIdle;
     private bool isAttack = false;
     private bool isDead;
+    private bool isAlive;
 
     protected float bulletSpeed = 500f;
     protected List<Bullet> bulletList = new List<Bullet>();
@@ -37,6 +41,11 @@ public class Character : MonoBehaviour
     public Animator Animator { get => animator; set => animator = value; }
     public bool IsDead { get => isDead; set => isDead = value; }
     public bool IsPlayAble { get => isPlayAble; set => isPlayAble = value; }
+    public Bot Bot { get => bot; }
+    public bool IsAlive { get => isAlive; set => isAlive = value; }
+    public Weapon WeponSpawn { get => weponSpawn; set => weponSpawn = value; }
+    public Transform FirePos { get => firePos; set => firePos = value; }
+    public Bullet Bullet { get => bullet; set => bullet = value; }
 
     public void SetBoolAnimation()
     {
@@ -49,11 +58,16 @@ public class Character : MonoBehaviour
     {
         if (CanAttack)
         {
-            transform.LookAt(mainTarget.transform.position);
+            transform.LookAt(new Vector3(mainTarget.transform.position.x, 0.5f, mainTarget.transform.position.z));
             isAttack = true;
             SetBoolAnimation();
             StartCoroutine(DelayBeforeAttack(0.25f));
         }
+    }
+
+    public void ResetAttack()
+    {
+        isAttack = false;
     }
 
     protected IEnumerator DelayBeforeAttack(float delayTime)
@@ -83,18 +97,8 @@ public class Character : MonoBehaviour
 
         // Shoot
         Bullet spawnBullet;
-        if (Bullet.stack.Count > 0)
-        {
-            // if pool have bullet
-            spawnBullet = Bullet.stack.Pop();
-            spawnBullet.transform.position = firePos.position;
-            spawnBullet.transform.rotation = firePos.rotation;
-        }
-        else
-        {
-            // if pool doesn't have any bullet then it will spawn
-            spawnBullet = Instantiate(bullet, firePos.position, firePos.rotation);
-        }
+        // if pool doesn't have any bullet then it will spawn
+        spawnBullet = LeanPool.Spawn(bullet, firePos.position, firePos.rotation);
         direc.y = 0f;
         spawnBullet.Init(direc, this, OnHitTarget);
     }
@@ -122,19 +126,22 @@ public class Character : MonoBehaviour
 
     public void OnTargetEnter(Character target)
     {
-        if (mainTarget is null)
+        if (IsAlive)
         {
-            mainTarget = target;
-        }
-        else
-        {
-            otherTarget.Add(target);
+            if (mainTarget is null)
+            {
+                mainTarget = target;
+            }
+            else
+            {
+                otherTarget.Add(target);
+            }
         }
     }
 
     protected void OnTargetExit(Character target)
     {
-        if (mainTarget == target)
+        if (mainTarget == target || !IsAlive)
         {
             if (otherTarget.Count > 0)
             {
@@ -145,6 +152,10 @@ public class Character : MonoBehaviour
             {
                 mainTarget = null;
             }
+        }
+        else if (!IsAlive)
+        {
+            otherTarget.Remove(target);
         }
         else
         {
@@ -160,6 +171,6 @@ public class Character : MonoBehaviour
 
     public void SpawnWeapon()
     {
-        Instantiate(weaponData.weapon, firePos);
+        weponSpawn = Instantiate(weaponData.weapon, firePos);
     }
 }
