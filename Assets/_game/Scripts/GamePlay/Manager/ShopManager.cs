@@ -50,18 +50,12 @@ public class ShopManager : Singleton<ShopManager>
         //SpawnWeapon();
     }
 
-    public void OnDespawnLastWeapon()
+    public void OnDespawnWeapon()
     {
         LeanPool.Despawn(lastWeapon);
         list.RemoveAt(0);
         //Destroy(lastWeapon.gameObject);
         //lastWeapon.gameObject.SetActive(false);
-    }
-
-    public void OnDespawnCurrentWeapon()
-    {
-        LeanPool.Despawn(lastWeapon);
-        list.Clear();
     }
 
     public void SpawnWeapon()

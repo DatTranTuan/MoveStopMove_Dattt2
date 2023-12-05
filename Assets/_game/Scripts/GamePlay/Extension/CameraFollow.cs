@@ -8,10 +8,9 @@ public class CameraFollow : Singleton<CameraFollow>
     [SerializeField] private GameObject cam;
     [SerializeField] private CinemachineBrain brain;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private float speed;
 
     private Player player;
-    //private int time = 20;
-    //private int timePlus = 100;
 
     private void Start()
     {
@@ -24,12 +23,16 @@ public class CameraFollow : Singleton<CameraFollow>
 
     private void Update()
     {
-        
+        virtualCamera.m_Lens.FieldOfView += Time.deltaTime * speed;
+        if (virtualCamera.m_Lens.FieldOfView >= 100)
+        {
+            virtualCamera.m_Lens.FieldOfView = 100;
+        }
     }
 
     public void SmoothCameraChange()
     {
         cam.transform.rotation = Quaternion.Euler(31f, 0f, 0f);
-        virtualCamera.m_Lens.FieldOfView = 100;
+        //virtualCamera.m_Lens.FieldOfView = 100;
     }
 }

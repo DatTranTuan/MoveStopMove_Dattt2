@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Lean.Pool;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -53,7 +54,7 @@ public class UIManager : Singleton<UIManager>
 
     public void OnCloseWeaponShop()
     {
-        ShopManager.Instance.OnDespawnCurrentWeapon();
+        ShopManager.Instance.OnDespawnWeapon();
         menuStartCanvas.SetActive(true);
         weaponShopCanvas.SetActive(false);
     }
@@ -65,13 +66,13 @@ public class UIManager : Singleton<UIManager>
 
     public void PressNextWeaponShop()
     {
-        ShopManager.Instance.OnDespawnLastWeapon();
+        ShopManager.Instance.OnDespawnWeapon();
         ShopManager.Instance.NextWeapon();
     }
 
     public void PressPrevWeaponShop()
     {
-        ShopManager.Instance.OnDespawnLastWeapon();
+        ShopManager.Instance.OnDespawnWeapon();
         ShopManager.Instance.PreviousWeapon();
     }
 
