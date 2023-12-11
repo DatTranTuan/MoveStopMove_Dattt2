@@ -2,21 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lean.Pool;
+using UnityEngine.UI;
 
 public class ShopManager : Singleton<ShopManager>
 {
     [SerializeField] private Transform weaponPos;
+    [SerializeField] private Transform hatPos;
+    [SerializeField] private Text textWeapon;
 
     private WeaponData weaponData;
     private WeaponType currentWeaponShop;
 
-    private List<WeaponData> listWeapon;
-    private int index;
+    public int weaponIndex;
+    public int hatIndex;
+
+    public List<WeaponData> listWeapon;
     private Weapon currentWeapon;
     private Weapon lastWeapon;
-    private Player player;
+    private PlayerData playerData;
 
     public List<Weapon> list = new List<Weapon>();
+
+    public List<HatData> listHat;
+    //private HatData hatData;
+    //private HatType hatType;
+    private Hat hat;
 
     private void Start()
     {
@@ -38,48 +48,75 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
+
     public void OnInit()
     {
-        index = 0;
+        weaponIndex = 0;
         listWeapon = DataManager.Instance.listWeaponData;
+        listHat = DataManager.Instance.listHatData;
+
         currentWeaponShop = WeaponType.Axe;
         if (weaponData == null)
         {
             weaponData = DataManager.Instance.GetWeaponData(currentWeaponShop);
         }
-        //SpawnWeapon();
+
+
+        //hatType = HatType.Arrow;
+        //if (hatData == null)
+        //{
+        //    hatData = DataManager.Instance.GetHatData(hatType);
+        //}
+    }
+
+    public void SpawnHatShop()
+    {
+        for (int i = 0; i < listHat.Count; i++)
+        {
+            Debug.Log("inside");
+            hat = Instantiate(listHat[i].hat, hatPos);
+        }
+    }
+
+    public void OnDespawnHatShop()
+    {
+        for (int i = 0; i < listHat.Count; i++)
+        {
+            Destroy(hat);
+        }
     }
 
     public void OnDespawnWeapon()
     {
         LeanPool.Despawn(lastWeapon);
         list.RemoveAt(0);
-        //Destroy(lastWeapon.gameObject);
-        //lastWeapon.gameObject.SetActive(false);
     }
 
     public void SpawnWeapon()
     {
-        SpawnWeaponShop(listWeapon[index].weapon);
+        SpawnWeaponShop(listWeapon[weaponIndex].weapon);
     }
 
     public void NextWeapon()
     {
-        index++;
-        SpawnWeaponShop(listWeapon[index].weapon);
+        if (weaponIndex < 2)
+        {
+            weaponIndex++;
+            WeaponData weaponData = listWeapon[weaponIndex];
+            SpawnWeaponShop(weaponData.weapon);
+            textWeapon.text = weaponData.weaponType.ToString();
+        }
     }
 
     public void PreviousWeapon()
     {
-        index--;
-        SpawnWeaponShop(listWeapon[index].weapon);
+        if (weaponIndex > 0)
+        {
+            weaponIndex--;
+            WeaponData weaponData = listWeapon[weaponIndex];
+            SpawnWeaponShop(weaponData.weapon);
+            textWeapon.text = weaponData.weaponType.ToString();
+        }
     }
 
-    public void EquipWeapon()
-    {
-        LevelManager.Instance.player.WeponSpawn = listWeapon[index].weapon;
-        LevelManager.Instance.player.Bullet = listWeapon[index].bullet;
-        Weapon spawn = LevelManager.Instance.player.WeponSpawn;
-        Instantiate(spawn, LevelManager.Instance.player.FirePos);
-    }
 }

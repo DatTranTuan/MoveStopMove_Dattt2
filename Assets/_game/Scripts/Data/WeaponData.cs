@@ -5,9 +5,9 @@ using UnityEngine;
 
 public enum WeaponType
 {
-    Hammer = 0,
-    Knife = 1,
-    Axe = 2,
+    Axe = 0,
+    Hammer = 1,
+    Knife = 2,
     Candy = 3
 }
 

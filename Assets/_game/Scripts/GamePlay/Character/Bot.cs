@@ -29,10 +29,9 @@ public class Bot : Character
 
     private void Start()
     {
-        //currentWeaponType = WeaponType.Axe;
         //weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         OnInit();
-        SpawnWeapon();
+        ChangeWeapon(currentWeaponType);
     }
 
     public void OnInit()
@@ -85,34 +84,6 @@ public class Bot : Character
             newState.OnEnter(this);
         }
     }
-
-    //private void CheckIndicator()
-    //{
-    //    if (meshRenderer.isVisible)
-    //    {
-    //        if (indicator.activeSelf == false)
-    //        {
-    //            indicator.SetActive(true);
-    //        }
-
-    //        Vector3 direction = player.transform.position - transform.position;
-
-    //        RaycastHit ray;
-
-    //        if (Physics.Raycast(transform.position, direction, out ray))
-    //        {
-    //            indicator.transform.position = ray.point;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (indicator.activeSelf == true)
-    //        {
-    //            indicator.SetActive(false);
-    //        }
-    //    }
-
-    //}
 
     private void SpawnBot()
     {

@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
     [SerializeField] protected Animator animator;
     [SerializeField] protected LayerMask enemyLayerMask;
     [SerializeField] protected Transform firePos;
+    [SerializeField] protected Transform headPos;
 
     protected bool CanAttack => !isAttack && isIdle == true && mainTarget != null;
 
@@ -21,20 +22,25 @@ public class Character : MonoBehaviour
     protected Vector3 direc;
 
     protected WeaponData weaponData;
+    protected HatData hatData;
     protected Bullet bullet;
     protected int targetCount;
     protected float circleRadius = 4f;
     protected bool isDelay;
     protected bool isPlayAble = true;
-    protected Weapon weponSpawn;
+    private Weapon weponSpawn;
+    private Hat hatSpawn;
 
     private bool isIdle;
     private bool isAttack = false;
     private bool isDead;
     private bool isAlive;
+    private bool inRange; // Later: Check inRange or not 
 
     protected float bulletSpeed = 500f;
     protected List<Bullet> bulletList = new List<Bullet>();
+
+    protected Weapon currentWeapon;
 
     public bool IsAttack { get => isAttack; set => isAttack = value; }
     public bool IsIdle { get => isIdle; set => isIdle = value; }
@@ -43,9 +49,12 @@ public class Character : MonoBehaviour
     public bool IsPlayAble { get => isPlayAble; set => isPlayAble = value; }
     public Bot Bot { get => bot; }
     public bool IsAlive { get => isAlive; set => isAlive = value; }
-    public Weapon WeponSpawn { get => weponSpawn; set => weponSpawn = value; }
     public Transform FirePos { get => firePos; set => firePos = value; }
     public Bullet Bullet { get => bullet; set => bullet = value; }
+    public Weapon WeponSpawn { get => weponSpawn; set => weponSpawn = value; }
+    public Hat HatSpawn { get => hatSpawn; set => hatSpawn = value; }
+
+    //public Weapon CurrentWeapon { get => currentWeapon; set => currentWeapon = value; }
 
     public void SetBoolAnimation()
     {
@@ -169,8 +178,30 @@ public class Character : MonoBehaviour
         bullet.ReturnToPool();
     }
 
-    public void SpawnWeapon()
+    public void ChangeWeapon(WeaponType weaponType)
     {
-        weponSpawn = Instantiate(weaponData.weapon, firePos);
+        weaponData = DataManager.Instance.listWeaponData[(int)weaponType];
+
+        if (WeponSpawn != null)
+        {
+            Destroy(WeponSpawn.gameObject);
+        }
+        WeponSpawn = Instantiate(weaponData.weapon, firePos);
     }
+
+    public void ChangeHat (HatType hatType)
+    {
+        hatData = DataManager.Instance.listHatData[(int)hatType];
+        if (hatSpawn != null)
+        {
+            Destroy(hatSpawn.gameObject);
+        }
+        hatSpawn = Instantiate(hatData.hat, headPos);
+    }
+
+    //public void SpawnWeapon()
+    //{
+    //    weponSpawn = Instantiate(weaponData.weapon, firePos);
+    //}
+
 }

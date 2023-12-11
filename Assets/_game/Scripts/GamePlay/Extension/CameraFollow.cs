@@ -12,27 +12,30 @@ public class CameraFollow : Singleton<CameraFollow>
 
     private Player player;
 
-    private void Start()
-    {
-        player = LevelManager.Instance.player;
-        virtualCamera.Follow = player.transform;
-        virtualCamera.LookAt = player.transform;
-        virtualCamera.m_Lens.FieldOfView = 20;
-        cam.transform.rotation = Quaternion.Euler(20f, 0f, 0f);
-    }
+    public Player Player { get => player; set => player = value; }
+    public GameObject Cam { get => cam; set => cam = value; }
+    public CinemachineVirtualCamera VirtualCamera { get => virtualCamera; set => virtualCamera = value; }
+
+    //private void Start()
+    //{
+    //    VirtualCamera.Follow = Player.transform;
+    //    VirtualCamera.LookAt = Player.transform;
+    //    VirtualCamera.m_Lens.FieldOfView = 20;
+    //    Cam.transform.rotation = Quaternion.Euler(20f, 0f, 0f);
+    //}
 
     private void Update()
     {
-        virtualCamera.m_Lens.FieldOfView += Time.deltaTime * speed;
-        if (virtualCamera.m_Lens.FieldOfView >= 100)
+        VirtualCamera.m_Lens.FieldOfView += Time.deltaTime * speed;
+        if (VirtualCamera.m_Lens.FieldOfView >= 90)
         {
-            virtualCamera.m_Lens.FieldOfView = 100;
+            VirtualCamera.m_Lens.FieldOfView = 90;
         }
     }
 
     public void SmoothCameraChange()
     {
-        cam.transform.rotation = Quaternion.Euler(31f, 0f, 0f);
+        Cam.transform.rotation = Quaternion.Euler(41f, 0f, 0f);
         //virtualCamera.m_Lens.FieldOfView = 100;
     }
 }

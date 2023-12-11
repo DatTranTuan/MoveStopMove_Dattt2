@@ -13,6 +13,8 @@ public class CacheString : MonoBehaviour
 
     public static string SCENE_NAME = "SampleScene";
 
+    public static string PLAYERPREFKEY = "PlayerData";
+
     public static string BULLET_TAG = "Bullet";
     public static string PLAYER_TAG = "Player";
     public static string BOT_TAG = "Bot";
