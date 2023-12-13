@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e2b53b439974e845b4dcad960346ad5, type: 3}
+  m_Name: Pant
+  m_EditorClassIdentifier: 
+  listPantData:
+  - pantType: 0
+    material: {fileID: 2100000, guid: e41a740f57b4e904cbeae344c9ba8373, type: 2}
+    pantSprite: {fileID: 21300000, guid: 1f7e9eb236c8768498ad5d8078d2533d, type: 3}
+  - pantType: 1
+    material: {fileID: 2100000, guid: 7ec126e9a3002774cb807b8748ea5b7e, type: 2}
+    pantSprite: {fileID: 21300000, guid: 3ddbc9e0f3f883a46b1ba9635f87c222, type: 3}
+  - pantType: 2
+    material: {fileID: 2100000, guid: 6616698ac9fc1e44983ab04167ed0809, type: 2}
+    pantSprite: {fileID: 21300000, guid: 2652851e5f7772041add8ebe7d548f2b, type: 3}
+  - pantType: 3
+    material: {fileID: 2100000, guid: 1bd76a1f422413941865482d1b2d9262, type: 2}
+    pantSprite: {fileID: 21300000, guid: ae9d58ecee0e3f848b8fedb3f2c67648, type: 3}
+  - pantType: 4
+    material: {fileID: 2100000, guid: b1e08c5f5e15fbe4a94de2cf7198c347, type: 2}
+    pantSprite: {fileID: 21300000, guid: 5433d4b044040c44487399b59f52e2b4, type: 3}
+  - pantType: 5
+    material: {fileID: 2100000, guid: 3c054aae1c247824e9f224d0dd3d4779, type: 2}
+    pantSprite: {fileID: 21300000, guid: ea8161e4ed231be438fe9e968bc8752c, type: 3}
+  - pantType: 6
+    material: {fileID: 2100000, guid: c9abed6af07762243893cb4366b7e699, type: 2}
+    pantSprite: {fileID: 21300000, guid: 4d6b3cb74098a8640b03cd004d1dcdbb, type: 3}
+  - pantType: 7
+    material: {fileID: 2100000, guid: 7252a2b8f9421b741aaea18c618f9231, type: 2}
+    pantSprite: {fileID: 21300000, guid: a39a74b87842b704ab4bc6eec7e6c287, type: 3}
+  - pantType: 8
+    material: {fileID: 2100000, guid: 7c08b88f3e6ae454294e942a135e986d, type: 2}
+    pantSprite: {fileID: 21300000, guid: 343f00cc518f2c34090d54d64a12c62e, type: 3}

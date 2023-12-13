@@ -12,6 +12,7 @@ public class Player : Character
 
     private WeaponType currentWeaponType;
     private HatType currentHatType;
+    private PantType currentPantType;
 
     private Joystick joystick;
     private Player player;
@@ -19,6 +20,8 @@ public class Player : Character
 
 
     public Joystick Joystick { get => joystick; set => joystick = value; }
+    public HatType CurrentHatType { get => currentHatType; set => currentHatType = value; }
+    public PantType CurrentPantType { get => currentPantType; set => currentPantType = value; }
 
     private void Start()
     {
@@ -35,15 +38,19 @@ public class Player : Character
             weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         }
         ChangeWeapon(currentWeaponType);
-        Debug.Log(currentWeaponType);
         bullet = weaponData.bullet;
 
         //hatType = HatType.Arrow;
         if (hatData == null)
         {
-            hatData = DataManager.Instance.GetHatData(currentHatType);
+            hatData = DataManager.Instance.GetHatData();
         }
+
+        currentHatType = DataManager.Instance.GetPlayerData().hatTypeData;
         ChangeHat(currentHatType);
+
+        currentPantType = DataManager.Instance.GetPlayerData().pantTypeData;
+        ChangePant(currentPantType);
     }
 
     protected void FixedUpdate()
@@ -100,16 +107,19 @@ public class Player : Character
     {
         LevelManager.Instance.player.currentWeaponType = ShopManager.Instance.listWeapon[ShopManager.Instance.weaponIndex].weaponType;
         ChangeWeapon(LevelManager.Instance.player.currentWeaponType);
-        LevelManager.Instance.player.WeponSpawn = ShopManager.Instance.listWeapon[ShopManager.Instance.weaponIndex].weapon;
+        LevelManager.Instance.player.bullet = ShopManager.Instance.listWeapon[ShopManager.Instance.weaponIndex].bullet;
         DataManager.Instance.SeekWeaponPlayerData(LevelManager.Instance.player.currentWeaponType);
     }
 
     public void EquipHat()
     {
-        LevelManager.Instance.player.currentHatType = ShopManager.Instance.listHat[ShopManager.Instance.hatIndex].hatType;
-        ChangeHat(LevelManager.Instance.player.currentHatType);
-        LevelManager.Instance.player.HatSpawn = ShopManager.Instance.listHat[ShopManager.Instance.hatIndex].hat;
+        ChangeHat(LevelManager.Instance.player.CurrentHatType);
+        DataManager.Instance.SeekHatPlayerData(LevelManager.Instance.player.CurrentHatType);
+    }
 
-        DataManager.Instance.SeekHatPlayerData(LevelManager.Instance.player.currentHatType);
+    public void EquipPant ()
+    {
+        ChangePant(currentPantType);
+        DataManager.Instance.SeekPantPlayerData(LevelManager.Instance.player.currentPantType);
     }
 }

@@ -9,10 +9,13 @@ public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private GameObject menuStartCanvas;
     [SerializeField] private GameObject weaponShopCanvas;
-    [SerializeField] private GameObject clothesShopCanvas;
+    [SerializeField] private GameObject clotheShopCanvas;
+    [SerializeField] private GameObject hatShopCanvas;
+    [SerializeField] private GameObject pantShopCanvas;
     [SerializeField] private GameObject loseCanvas;
 
     [SerializeField] private Button buttonClickPlay;
+    [SerializeField] private Button buttonClickClotheShop;
 
     [SerializeField] private Button buttonClickWeaponShop;
     [SerializeField] private Button buttonCloseWeaponShop;
@@ -20,8 +23,13 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Button buttonPreWeapon;
     [SerializeField] private Button buttonEquipWeapon;
 
-    [SerializeField] private Button buttonClickClothesShop;
-    [SerializeField] private Button buttonCloseClothesShop;
+    [SerializeField] private Button buttonClickHatShop;
+    [SerializeField] private Button buttonCloseHatShop;
+    [SerializeField] private Button buttonSelectHat;
+
+    [SerializeField] private Button buttonClickPantShop;
+    [SerializeField] private Button buttonClosePantShop;
+    [SerializeField] private Button buttonSelectPantShop;
 
     [SerializeField] private Button buttonReloadGame;
 
@@ -40,8 +48,15 @@ public class UIManager : Singleton<UIManager>
 
         buttonReloadGame.onClick.AddListener(ReloadGame);
 
-        buttonClickClothesShop.onClick.AddListener(OnClickClothesShop);
-        buttonCloseClothesShop.onClick.AddListener(OnCloseClothesShop);
+        buttonClickHatShop.onClick.AddListener(OnClickHatShop);
+        buttonCloseHatShop.onClick.AddListener(OnCloseHatShop);
+        buttonSelectHat.onClick.AddListener(OnClickSelectHatButton);
+
+        buttonClickPantShop.onClick.AddListener(OnClickPantShop);
+        buttonClosePantShop.onClick.AddListener(OnClosePantShop);
+        buttonSelectPantShop.onClick.AddListener(OnSelectPantButton);
+
+        buttonClickClotheShop.onClick.AddListener(OnClickClotheShop);
     }
 
     private void Start()
@@ -99,19 +114,51 @@ public class UIManager : Singleton<UIManager>
         LevelManager.Instance.player.EquipWeapon();
     }
 
-    public void OnClickClothesShop()
+    public void OnClickClotheShop ()
     {
         menuStartCanvas.SetActive(false);
-        clothesShopCanvas.SetActive(true);
+        clotheShopCanvas.SetActive(true);
+    }
+
+    public void OnClickHatShop()
+    {
+        menuStartCanvas.SetActive(false);
+        hatShopCanvas.SetActive(true);
+        pantShopCanvas.SetActive(false);
         ShopManager.Instance.SpawnHatShop();
 
     }
 
-    public void OnCloseClothesShop()
+    public void OnCloseHatShop()
     {
         menuStartCanvas.SetActive(true);
-        clothesShopCanvas.SetActive(false);
+        hatShopCanvas.SetActive(false);
         ShopManager.Instance.OnDespawnHatShop();
+    }
+
+    public void OnClickSelectHatButton()
+    {
+        ShopManager.Instance.OnClickEquipHatButton();
+    }
+
+    public void OnClickPantShop()
+    {
+        menuStartCanvas.SetActive(false);
+        hatShopCanvas.SetActive(false);
+        pantShopCanvas.SetActive(true);
+        ShopManager.Instance.SpawnPantShop();
+    }
+
+    public void OnClosePantShop() 
+    {
+        menuStartCanvas.SetActive(true);
+        pantShopCanvas.SetActive(false);
+        ShopManager.Instance.OnDespawnPantShop();
+    }
+
+    public void OnSelectPantButton ()
+    {
+        ShopManager.Instance.OnClickEquipPantButton();
     }
 
     public void ReloadGame()

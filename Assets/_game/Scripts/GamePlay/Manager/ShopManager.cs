@@ -8,7 +8,11 @@ public class ShopManager : Singleton<ShopManager>
 {
     [SerializeField] private Transform weaponPos;
     [SerializeField] private Transform hatPos;
+    [SerializeField] private Transform pantPos;
     [SerializeField] private Text textWeapon;
+
+    [SerializeField] private HatItemUI hatItemUI;
+    [SerializeField] private PantItemUI pantItemUI;
 
     private WeaponData weaponData;
     private WeaponType currentWeaponShop;
@@ -26,7 +30,12 @@ public class ShopManager : Singleton<ShopManager>
     public List<HatData> listHat;
     //private HatData hatData;
     //private HatType hatType;
-    private Hat hat;
+    private HatImage hatImage;
+    private HatData currentSelectHatData;
+
+    public List<PantData> listPant;
+    private PantImage pantImage;
+    private PantData currentSelectPantData;
 
     private void Start()
     {
@@ -73,16 +82,56 @@ public class ShopManager : Singleton<ShopManager>
     {
         for (int i = 0; i < listHat.Count; i++)
         {
-            Debug.Log("inside");
-            hat = Instantiate(listHat[i].hat, hatPos);
+            hatItemUI = Instantiate(hatItemUI, hatPos);
+            hatItemUI.SetData(listHat[i], OnCLickHatButton);
         }
+    }
+
+    public void SpawnPantShop()
+    {
+        for (int i = 0; i < listPant.Count; i++)
+        {
+            pantItemUI = Instantiate(pantItemUI, pantPos);
+            pantItemUI.SetData(listPant[i], OnCLickPantButton);
+        }
+    }
+
+    public void OnCLickPantButton (PantData pantData)
+    {
+        currentSelectPantData = pantData;
+    }
+
+    public void OnClickEquipPantButton ()
+    {
+        LevelManager.Instance.player.CurrentPantType = currentSelectPantData.pantType;
+        LevelManager.Instance.player.EquipPant();
+    }
+
+    public void OnCLickHatButton (HatData hatData)
+    {
+        currentSelectHatData = hatData;
+    }
+
+    public void OnClickEquipHatButton()
+    {
+        LevelManager.Instance.player.CurrentHatType = currentSelectHatData.hatType;
+        LevelManager.Instance.player.EquipHat();
+        //LevelManager.Instance.player.HatSpawn = hatData.hat;
     }
 
     public void OnDespawnHatShop()
     {
         for (int i = 0; i < listHat.Count; i++)
         {
-            Destroy(hat);
+            Destroy(hatItemUI);
+        }
+    }
+
+    public void OnDespawnPantShop ()
+    {
+        for (int i = 0; i < listHat.Count; i++)
+        {
+            Destroy(pantItemUI);
         }
     }
 

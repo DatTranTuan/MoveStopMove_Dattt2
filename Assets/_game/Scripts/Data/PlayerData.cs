@@ -8,9 +8,11 @@ public class PlayerData
 {
     public WeaponType weaponTypeData;
     public HatType hatTypeData;
+    public PantType pantTypeData;
 
     public PlayerData() {
         weaponTypeData = WeaponType.Axe;
         hatTypeData = HatType.Arrow;
+        pantTypeData = PantType.Batman;
     }
 }

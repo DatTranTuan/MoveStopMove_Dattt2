@@ -12,6 +12,8 @@ public class DataManager : Singleton<DataManager>
     public HatDataSO hatDataSO;
     public List<HatData> listHatData;
 
+    public PantDataSO pantDataSO;
+
     private PlayerData playerData;
 
     public int weaponIndex;
@@ -30,6 +32,12 @@ public class DataManager : Singleton<DataManager>
         }
 
         playerData = LoadPlayerData();
+        Debug.Log(playerData.hatTypeData.ToString());
+    }
+
+    public PlayerData GetPlayerData()
+    {
+        return playerData;
     }
 
     public WeaponData GetWeaponData(WeaponType weaponType)
@@ -45,12 +53,12 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
-    public HatData GetHatData(HatType hatType)
+    public HatData GetHatData()
     {
         List<HatData> hats = hatDataSO.listHatData;
         for (int i = 0; i < hats.Count; i++)
         {
-            if (hatType == hats[i].hatType)
+            if (playerData.hatTypeData == hats[i].hatType)
             {
                 return hats[i];
             }
@@ -67,6 +75,12 @@ public class DataManager : Singleton<DataManager>
     public void SeekHatPlayerData(HatType hatType)
     {
         playerData.hatTypeData = hatType;
+        SavePlayerData(playerData);
+    }
+
+    public void SeekPantPlayerData(PantType pantType)
+    {
+        playerData.pantTypeData = pantType;
         SavePlayerData(playerData);
     }
 

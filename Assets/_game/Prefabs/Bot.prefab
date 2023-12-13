@@ -140,6 +140,7 @@ MonoBehaviour:
     m_Bits: 64
   firePos: {fileID: 2268296584382044665}
   headPos: {fileID: 854504976934867810}
+  skinned: {fileID: 9085473200753030141}
   agent: {fileID: 4124261032544131632}
   botPrefab: {fileID: 7587256198763046198}
   offScreen: {fileID: 182065784865775162}
@@ -820,5 +821,10 @@ Transform:
 --- !u!4 &5617089458763129628 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3800467336962686104, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 482428377307258996}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &9085473200753030141 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 482428377307258996}
   m_PrefabAsset: {fileID: 0}

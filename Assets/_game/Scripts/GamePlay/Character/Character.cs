@@ -10,6 +10,7 @@ public class Character : MonoBehaviour
     [SerializeField] protected LayerMask enemyLayerMask;
     [SerializeField] protected Transform firePos;
     [SerializeField] protected Transform headPos;
+    [SerializeField] protected SkinnedMeshRenderer skinned;
 
     protected bool CanAttack => !isAttack && isIdle == true && mainTarget != null;
 
@@ -23,13 +24,16 @@ public class Character : MonoBehaviour
 
     protected WeaponData weaponData;
     protected HatData hatData;
+    protected PantData pantData;
     protected Bullet bullet;
     protected int targetCount;
     protected float circleRadius = 4f;
     protected bool isDelay;
     protected bool isPlayAble = true;
+
     private Weapon weponSpawn;
     private Hat hatSpawn;
+    private Sprite pantSpawn;
 
     private bool isIdle;
     private bool isAttack = false;
@@ -182,11 +186,14 @@ public class Character : MonoBehaviour
     {
         weaponData = DataManager.Instance.listWeaponData[(int)weaponType];
 
+        Debug.Log(WeponSpawn);
         if (WeponSpawn != null)
         {
             Destroy(WeponSpawn.gameObject);
         }
+
         WeponSpawn = Instantiate(weaponData.weapon, firePos);
+        Debug.Log(WeponSpawn + " Index 2");
     }
 
     public void ChangeHat (HatType hatType)
@@ -198,6 +205,11 @@ public class Character : MonoBehaviour
         }
         hatSpawn = Instantiate(hatData.hat, headPos);
     }
+
+    public void ChangePant(PantType pantType)
+    {
+        skinned.material = DataManager.Instance.pantDataSO.listPantData[(int)pantType].material;
+    } 
 
     //public void SpawnWeapon()
     //{

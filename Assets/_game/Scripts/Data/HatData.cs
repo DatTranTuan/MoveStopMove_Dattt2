@@ -21,4 +21,5 @@ public class HatData
 {
     public HatType hatType;
     public Hat hat;
+    public Sprite hatSprite;
 }

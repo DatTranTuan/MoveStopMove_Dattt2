@@ -352,6 +352,7 @@ MonoBehaviour:
     m_Bits: 8
   firePos: {fileID: 5250431924574045258}
   headPos: {fileID: 3825988180642435319}
+  skinned: {fileID: 6216446938063409334}
   rb: {fileID: 6585213529387026720}
   targetPoint: {fileID: 3058092901126770121}
 --- !u!95 &5780027371570162325
@@ -844,6 +845,11 @@ PrefabInstance:
 --- !u!95 &365369029681481055 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 3378467443609764671}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6216446938063409334 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 3378467443609764671}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7323060985584435287 stripped
