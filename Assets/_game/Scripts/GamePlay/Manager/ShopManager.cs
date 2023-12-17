@@ -9,10 +9,16 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] private Transform weaponPos;
     [SerializeField] private Transform hatPos;
     [SerializeField] private Transform pantPos;
+    [SerializeField] private Transform shieldPos;
     [SerializeField] private Text textWeapon;
 
     [SerializeField] private HatItemUI hatItemUI;
     [SerializeField] private PantItemUI pantItemUI;
+    [SerializeField] private ShieldItemUI shieldItemUI;
+
+    [SerializeField] private Button purchaseButton;
+    [SerializeField] private Button equipBtn;
+    [SerializeField] private Button equipedBtn;
 
     private WeaponData weaponData;
     private WeaponType currentWeaponShop;
@@ -28,8 +34,6 @@ public class ShopManager : Singleton<ShopManager>
     public List<Weapon> list = new List<Weapon>();
 
     public List<HatData> listHat;
-    //private HatData hatData;
-    //private HatType hatType;
     private HatImage hatImage;
     private HatData currentSelectHatData;
 
@@ -37,9 +41,15 @@ public class ShopManager : Singleton<ShopManager>
     private PantImage pantImage;
     private PantData currentSelectPantData;
 
+    private List<ShieldData> listShield;
+    private ShieldData currentSelectShieldData;
+
+    private List<Hat> listEquipHat;
+
     private void Start()
     {
         OnInit();
+        playerData = DataManager.Instance.GetPlayerData();
     }
 
     public void SpawnWeaponShop(Weapon wepon)
@@ -63,6 +73,8 @@ public class ShopManager : Singleton<ShopManager>
         weaponIndex = 0;
         listWeapon = DataManager.Instance.listWeaponData;
         listHat = DataManager.Instance.listHatData;
+        listPant = DataManager.Instance.listPantData;
+        listShield = DataManager.Instance.listShieldData;
 
         currentWeaponShop = WeaponType.Axe;
         if (weaponData == null)
@@ -96,6 +108,26 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
+    public void SpawnShieldShop ()
+    {
+        for (int i = 0; i < listShield.Count; i++)
+        {
+            shieldItemUI = Instantiate(shieldItemUI, shieldPos);
+            shieldItemUI.SetData(listShield[i], OnClickShieldButton);
+        }
+    }
+
+    public void OnClickShieldButton(ShieldData shieldData)
+    {
+        currentSelectShieldData = shieldData;
+    }
+
+    public void OnClickEquipShieldButton ()
+    {
+        LevelManager.Instance.player.CurrentShieldType = currentSelectShieldData.shieldType;
+        LevelManager.Instance.player.EquipShield();
+    }
+
     public void OnCLickPantButton (PantData pantData)
     {
         currentSelectPantData = pantData;
@@ -110,28 +142,27 @@ public class ShopManager : Singleton<ShopManager>
     public void OnCLickHatButton (HatData hatData)
     {
         currentSelectHatData = hatData;
+        CheckHatStatus(currentSelectHatData);
     }
 
     public void OnClickEquipHatButton()
     {
         LevelManager.Instance.player.CurrentHatType = currentSelectHatData.hatType;
         LevelManager.Instance.player.EquipHat();
-        //LevelManager.Instance.player.HatSpawn = hatData.hat;
     }
 
-    public void OnDespawnHatShop()
+    public void OnClickBuyHatButton()
     {
-        for (int i = 0; i < listHat.Count; i++)
+        LevelManager.Instance.player.CurrentHatType = currentSelectHatData.hatType;
+        // Add check money
+        if (playerData.coin >= currentSelectHatData.price)
         {
-            Destroy(hatItemUI);
-        }
-    }
-
-    public void OnDespawnPantShop ()
-    {
-        for (int i = 0; i < listHat.Count; i++)
-        {
-            Destroy(pantItemUI);
+            playerData.coin -= currentSelectHatData.price;
+            playerData.hatList.Add((int)currentSelectHatData.hatType);
+            DataManager.Instance.SavePlayerData(playerData);
+            LevelManager.Instance.player.EquipHat();
+            GameManager.Instance.CoinText.text = DataManager.Instance.CoinData.ToString();
+            CheckHatStatus(currentSelectHatData);
         }
     }
 
@@ -168,4 +199,29 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
+    //private void ChangeButton(Button on, Button off1)
+    //{
+    //    on.gameObject.SetActive(true);
+    //    off1.gameObject.SetActive(false);
+    //}
+
+    private void CheckHatStatus(HatData hatData)
+    {
+        if (playerData.hatList.Contains((int)hatData.hatType)) 
+        {
+            UIManager.Instance.ButtonSelectHat.gameObject.SetActive(true);
+            UIManager.Instance.ButtonBuyHat.gameObject.SetActive(false);
+            UIManager.Instance.ButtonSelectHat.onClick.RemoveAllListeners();
+            UIManager.Instance.ButtonSelectHat.onClick.AddListener(OnClickEquipHatButton);
+            
+        }
+        else
+        {
+            UIManager.Instance.ButtonSelectHat.gameObject.SetActive(false);
+            UIManager.Instance.ButtonBuyHat.gameObject.SetActive(true);
+            UIManager.Instance.ButtonBuyHat.onClick.RemoveAllListeners();
+            UIManager.Instance.ButtonBuyHat.onClick.AddListener(OnClickBuyHatButton);
+        }
+    }
+   
 }

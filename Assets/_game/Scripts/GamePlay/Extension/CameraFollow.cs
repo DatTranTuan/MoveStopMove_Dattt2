@@ -35,7 +35,7 @@ public class CameraFollow : Singleton<CameraFollow>
 
     public void SmoothCameraChange()
     {
-        Cam.transform.rotation = Quaternion.Euler(41f, 0f, 0f);
+        Cam.transform.rotation = Quaternion.Euler(21f, 0f, 0f);
         //virtualCamera.m_Lens.FieldOfView = 100;
     }
 }

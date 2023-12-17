@@ -27,6 +27,8 @@ public class Bot : Character
     private float wanderRadius = 20f;
     private IState currentState;
 
+    private int botIndex;
+
     private void Start()
     {
         //weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);

@@ -7,11 +7,17 @@ using Lean.Pool;
 
 public class UIManager : Singleton<UIManager>
 {
+    private float countDown = 5f;
+
+    [SerializeField] private Text countDownText;
+    [SerializeField] private GameObject circleCountDown;
+
     [SerializeField] private GameObject menuStartCanvas;
     [SerializeField] private GameObject weaponShopCanvas;
     [SerializeField] private GameObject clotheShopCanvas;
     [SerializeField] private GameObject hatShopCanvas;
     [SerializeField] private GameObject pantShopCanvas;
+    [SerializeField] private GameObject shieldShopCanvas;
     [SerializeField] private GameObject loseCanvas;
 
     [SerializeField] private Button buttonClickPlay;
@@ -24,17 +30,23 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Button buttonEquipWeapon;
 
     [SerializeField] private Button buttonClickHatShop;
-    [SerializeField] private Button buttonCloseHatShop;
+    [SerializeField] private Button buttonCloseClothesShop;
     [SerializeField] private Button buttonSelectHat;
+    [SerializeField] private Button buttonBuyHat;
 
     [SerializeField] private Button buttonClickPantShop;
-    [SerializeField] private Button buttonClosePantShop;
     [SerializeField] private Button buttonSelectPantShop;
+
+    [SerializeField] private Button buttonClickShieldShop;
+    [SerializeField] private Button buttonSelectShieldShop;
 
     [SerializeField] private Button buttonReloadGame;
 
     private ShopManager shopManager;
     private Player player;
+
+    public Button ButtonSelectHat { get => buttonSelectHat; set => buttonSelectHat = value; }
+    public Button ButtonBuyHat { get => buttonBuyHat; set => buttonBuyHat = value; }
 
     private void OnEnable()
     {
@@ -46,22 +58,37 @@ public class UIManager : Singleton<UIManager>
         buttonPreWeapon.onClick.AddListener(PressPrevWeaponShop);
         buttonEquipWeapon.onClick.AddListener(PressEquipWeaponShop);
 
-        buttonReloadGame.onClick.AddListener(ReloadGame);
+        buttonReloadGame.onClick.AddListener(RevivePlayer);
 
         buttonClickHatShop.onClick.AddListener(OnClickHatShop);
-        buttonCloseHatShop.onClick.AddListener(OnCloseHatShop);
-        buttonSelectHat.onClick.AddListener(OnClickSelectHatButton);
+        ButtonSelectHat.onClick.AddListener(OnClickSelectHatButton);
 
         buttonClickPantShop.onClick.AddListener(OnClickPantShop);
-        buttonClosePantShop.onClick.AddListener(OnClosePantShop);
         buttonSelectPantShop.onClick.AddListener(OnSelectPantButton);
 
+        buttonClickShieldShop.onClick.AddListener(OnClickShieldShop);
+        buttonSelectShieldShop.onClick.AddListener(OnSelectShieldShop);
+
+        buttonCloseClothesShop.onClick.AddListener(OnCloseClothesShop);
         buttonClickClotheShop.onClick.AddListener(OnClickClotheShop);
     }
 
     private void Start()
     {
         Time.timeScale = 0;
+    }
+
+    private IEnumerator Countdown()
+    {
+        while (countDown > 0)
+        {
+            countDownText.text = ((int)countDown).ToString();
+            circleCountDown.transform.Rotate(360f * Time.deltaTime * Vector3.back);
+            countDown -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        countDownText.text = "0";
+        countDown = 5f;
     }
 
     public void OnClickPlayButton()
@@ -88,6 +115,8 @@ public class UIManager : Singleton<UIManager>
     public void OnLoseUI()
     {
         loseCanvas.SetActive(true);
+        StopAllCoroutines();
+        StartCoroutine(Countdown());
     }
 
     public void PressNextWeaponShop()
@@ -118,6 +147,12 @@ public class UIManager : Singleton<UIManager>
     {
         menuStartCanvas.SetActive(false);
         clotheShopCanvas.SetActive(true);
+        hatShopCanvas.SetActive(true);
+        pantShopCanvas.SetActive(false);
+        shieldShopCanvas.SetActive(false);
+        ShopManager.Instance.SpawnHatShop();
+        ShopManager.Instance.SpawnPantShop();
+        ShopManager.Instance.SpawnShieldShop();
     }
 
     public void OnClickHatShop()
@@ -125,15 +160,16 @@ public class UIManager : Singleton<UIManager>
         menuStartCanvas.SetActive(false);
         hatShopCanvas.SetActive(true);
         pantShopCanvas.SetActive(false);
-        ShopManager.Instance.SpawnHatShop();
-
+        shieldShopCanvas.SetActive(false);
     }
 
-    public void OnCloseHatShop()
+    public void OnCloseClothesShop()
     {
         menuStartCanvas.SetActive(true);
         hatShopCanvas.SetActive(false);
-        ShopManager.Instance.OnDespawnHatShop();
+        clotheShopCanvas.SetActive(false);
+        shieldShopCanvas.SetActive(false);
+        //ShopManager.Instance.OnDespawnHatShop();
     }
 
     public void OnClickSelectHatButton()
@@ -145,15 +181,9 @@ public class UIManager : Singleton<UIManager>
     {
         menuStartCanvas.SetActive(false);
         hatShopCanvas.SetActive(false);
+        shieldShopCanvas.SetActive(false);
         pantShopCanvas.SetActive(true);
-        ShopManager.Instance.SpawnPantShop();
-    }
-
-    public void OnClosePantShop() 
-    {
-        menuStartCanvas.SetActive(true);
-        pantShopCanvas.SetActive(false);
-        ShopManager.Instance.OnDespawnPantShop();
+        //ShopManager.Instance.SpawnPantShop();
     }
 
     public void OnSelectPantButton ()
@@ -161,8 +191,25 @@ public class UIManager : Singleton<UIManager>
         ShopManager.Instance.OnClickEquipPantButton();
     }
 
-    public void ReloadGame()
+    public void OnClickShieldShop()
     {
-        SceneManager.LoadScene(CacheString.SCENE_NAME);
+        menuStartCanvas.SetActive(false);
+        hatShopCanvas.SetActive(false);
+        pantShopCanvas.SetActive(false);
+        shieldShopCanvas.SetActive(true);
     }
+
+    public void OnSelectShieldShop()
+    {
+        ShopManager.Instance.OnClickEquipShieldButton();
+    }
+
+    public void RevivePlayer()
+    {
+        //SceneManager.LoadScene(CacheString.SCENE_NAME);
+        LevelManager.Instance.player.OnRevive();
+        loseCanvas.SetActive(false);
+    }
+
+    
 }

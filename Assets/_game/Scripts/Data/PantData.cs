@@ -22,4 +22,5 @@ public class PantData
     public PantType pantType;
     public Material material;
     public Sprite pantSprite;
+    public int price;
 }

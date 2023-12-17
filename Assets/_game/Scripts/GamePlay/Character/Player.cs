@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class Player : Character
@@ -13,15 +14,16 @@ public class Player : Character
     private WeaponType currentWeaponType;
     private HatType currentHatType;
     private PantType currentPantType;
+    private ShieldType currentShieldType;
 
     private Joystick joystick;
     private Player player;
     private PlayerData playerData;
 
-
     public Joystick Joystick { get => joystick; set => joystick = value; }
     public HatType CurrentHatType { get => currentHatType; set => currentHatType = value; }
     public PantType CurrentPantType { get => currentPantType; set => currentPantType = value; }
+    public ShieldType CurrentShieldType { get => currentShieldType; set => currentShieldType = value; }
 
     private void Start()
     {
@@ -51,13 +53,16 @@ public class Player : Character
 
         currentPantType = DataManager.Instance.GetPlayerData().pantTypeData;
         ChangePant(currentPantType);
+
+        currentShieldType = DataManager.Instance.GetPlayerData().shieldTypeData;
+        ChangeShield(currentShieldType);
     }
 
     protected void FixedUpdate()
     {
         if (isPlayAble)
         {
-            rb.velocity = new Vector3(Joystick.Horizontal * moveSpeed, rb.velocity.y, Joystick.Vertical /*0*/ * moveSpeed);
+            rb.velocity = new Vector3(Joystick.Horizontal * moveSpeed, rb.velocity.y, Joystick.Vertical * moveSpeed);
             // joystick vertical > => joystick = 0
             if (Joystick.Horizontal != 0 || Joystick.Vertical != 0)
             {
@@ -101,6 +106,17 @@ public class Player : Character
         SetBoolAnimation();
         targetPoint.SetActive(false);
         targetPoint.transform.position = transform.position;
+        DataManager.Instance.SavePlayerData(DataManager.Instance.GetPlayerData());
+        GameManager.Instance.Index = 0;
+    }
+
+    public void OnRevive ()
+    {
+        IsAlive = true;
+        isPlayAble = true;
+        IsIdle = true;
+        IsDead = false;
+        SetBoolAnimation();
     }
 
     public void EquipWeapon()
@@ -108,18 +124,24 @@ public class Player : Character
         LevelManager.Instance.player.currentWeaponType = ShopManager.Instance.listWeapon[ShopManager.Instance.weaponIndex].weaponType;
         ChangeWeapon(LevelManager.Instance.player.currentWeaponType);
         LevelManager.Instance.player.bullet = ShopManager.Instance.listWeapon[ShopManager.Instance.weaponIndex].bullet;
-        DataManager.Instance.SeekWeaponPlayerData(LevelManager.Instance.player.currentWeaponType);
+        DataManager.Instance.SaveWeaponPlayerData(LevelManager.Instance.player.currentWeaponType);
     }
 
     public void EquipHat()
     {
         ChangeHat(LevelManager.Instance.player.CurrentHatType);
-        DataManager.Instance.SeekHatPlayerData(LevelManager.Instance.player.CurrentHatType);
+        DataManager.Instance.SaveHatPlayerData(LevelManager.Instance.player.CurrentHatType);
     }
 
     public void EquipPant ()
     {
         ChangePant(currentPantType);
-        DataManager.Instance.SeekPantPlayerData(LevelManager.Instance.player.currentPantType);
+        DataManager.Instance.SavePantPlayerData(LevelManager.Instance.player.currentPantType);
+    }
+
+    public void EquipShield()
+    {
+        ChangeShield(currentShieldType);
+        DataManager.Instance.SaveShieldPlayerData(LevelManager.Instance.player.currentShieldType);
     }
 }

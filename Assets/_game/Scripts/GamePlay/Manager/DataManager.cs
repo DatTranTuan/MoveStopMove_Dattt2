@@ -13,6 +13,10 @@ public class DataManager : Singleton<DataManager>
     public List<HatData> listHatData;
 
     public PantDataSO pantDataSO;
+    public List<PantData> listPantData;
+
+    public ShieldDataSO shieldDataSO;
+    public List<ShieldData> listShieldData;
 
     private PlayerData playerData;
 
@@ -22,6 +26,8 @@ public class DataManager : Singleton<DataManager>
     {
         listWeaponData = weaponDataSO.listWeaponData;
         listHatData = hatDataSO.listHatData;
+        listPantData = pantDataSO.listPantData;
+        listShieldData = shieldDataSO.listShield;
     }
 
     public void Init()
@@ -32,7 +38,6 @@ public class DataManager : Singleton<DataManager>
         }
 
         playerData = LoadPlayerData();
-        Debug.Log(playerData.hatTypeData.ToString());
     }
 
     public PlayerData GetPlayerData()
@@ -66,21 +71,29 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
-    public void SeekWeaponPlayerData(WeaponType weaponType)
+    public int CoinData { get => playerData.coin; set => playerData.coin = value; }
+
+    public void SaveWeaponPlayerData(WeaponType weaponType)
     {
         playerData.weaponTypeData = weaponType;
         SavePlayerData(playerData);
     }
 
-    public void SeekHatPlayerData(HatType hatType)
+    public void SaveHatPlayerData(HatType hatType)
     {
         playerData.hatTypeData = hatType;
         SavePlayerData(playerData);
     }
 
-    public void SeekPantPlayerData(PantType pantType)
+    public void SavePantPlayerData(PantType pantType)
     {
         playerData.pantTypeData = pantType;
+        SavePlayerData(playerData);
+    }
+
+    public void SaveShieldPlayerData(ShieldType shieldType)
+    {
+        playerData.shieldTypeData = shieldType;
         SavePlayerData(playerData);
     }
 

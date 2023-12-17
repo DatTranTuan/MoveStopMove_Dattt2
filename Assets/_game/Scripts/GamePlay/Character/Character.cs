@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lean.Pool;
+using UnityEditor.Experimental.GraphView;
 
 public class Character : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Character : MonoBehaviour
     [SerializeField] protected LayerMask enemyLayerMask;
     [SerializeField] protected Transform firePos;
     [SerializeField] protected Transform headPos;
+    [SerializeField] protected Transform armPos;
     [SerializeField] protected SkinnedMeshRenderer skinned;
 
     protected bool CanAttack => !isAttack && isIdle == true && mainTarget != null;
@@ -22,9 +24,13 @@ public class Character : MonoBehaviour
     protected Transform nearEnemy;
     protected Vector3 direc;
 
+    protected int kill;
+
     protected WeaponData weaponData;
     protected HatData hatData;
     protected PantData pantData;
+    protected ShieldData shieldData;
+
     protected Bullet bullet;
     protected int targetCount;
     protected float circleRadius = 4f;
@@ -33,6 +39,7 @@ public class Character : MonoBehaviour
 
     private Weapon weponSpawn;
     private Hat hatSpawn;
+    private Shield shieldSpawn;
     private Sprite pantSpawn;
 
     private bool isIdle;
@@ -57,6 +64,8 @@ public class Character : MonoBehaviour
     public Bullet Bullet { get => bullet; set => bullet = value; }
     public Weapon WeponSpawn { get => weponSpawn; set => weponSpawn = value; }
     public Hat HatSpawn { get => hatSpawn; set => hatSpawn = value; }
+    public Shield ShieldSpawn { get => shieldSpawn; set => shieldSpawn = value; }
+    public int Kill { get => kill; set => kill = value; }
 
     //public Weapon CurrentWeapon { get => currentWeapon; set => currentWeapon = value; }
 
@@ -71,7 +80,7 @@ public class Character : MonoBehaviour
     {
         if (CanAttack)
         {
-            transform.LookAt(new Vector3(mainTarget.transform.position.x, 0.5f, mainTarget.transform.position.z));
+            transform.LookAt(new Vector3(mainTarget.transform.position.x, transform.position.y, mainTarget.transform.position.z));
             isAttack = true;
             SetBoolAnimation();
             StartCoroutine(DelayBeforeAttack(0.25f));
@@ -111,7 +120,8 @@ public class Character : MonoBehaviour
         // Shoot
         Bullet spawnBullet;
         // if pool doesn't have any bullet then it will spawn
-        spawnBullet = LeanPool.Spawn(bullet, firePos.position, firePos.rotation);
+        spawnBullet = LeanPool.Spawn(bullet, firePos.position, Quaternion.identity);
+        spawnBullet.transform.localScale = (1f + Mathf.Log10(kill + 1f)) * Vector3.one;
         direc.y = 0f;
         spawnBullet.Init(direc, this, OnHitTarget);
     }
@@ -186,14 +196,12 @@ public class Character : MonoBehaviour
     {
         weaponData = DataManager.Instance.listWeaponData[(int)weaponType];
 
-        Debug.Log(WeponSpawn);
         if (WeponSpawn != null)
         {
             Destroy(WeponSpawn.gameObject);
         }
 
         WeponSpawn = Instantiate(weaponData.weapon, firePos);
-        Debug.Log(WeponSpawn + " Index 2");
     }
 
     public void ChangeHat (HatType hatType)
@@ -209,11 +217,15 @@ public class Character : MonoBehaviour
     public void ChangePant(PantType pantType)
     {
         skinned.material = DataManager.Instance.pantDataSO.listPantData[(int)pantType].material;
-    } 
+    }
 
-    //public void SpawnWeapon()
-    //{
-    //    weponSpawn = Instantiate(weaponData.weapon, firePos);
-    //}
-
+    public void ChangeShield(ShieldType shieldType)
+    {
+        shieldData = DataManager.Instance.listShieldData[(int)shieldType];
+        if (shieldSpawn != null)
+        {
+            Destroy(shieldSpawn.gameObject);
+        }
+        shieldSpawn = Instantiate(shieldData.shield, armPos);
+    }
 }

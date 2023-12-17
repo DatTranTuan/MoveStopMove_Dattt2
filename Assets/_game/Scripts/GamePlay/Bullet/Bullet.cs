@@ -6,14 +6,16 @@ using Lean.Pool;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float speed;
     [SerializeField] private float rotateSpeed = 400f;
 
+    private float speed = 10f;
+
+    private float indexTime = 1f;
     private Character attacker;
     private Vector3 direction;
     private Action<Character, Bullet> onHitTarget;
 
-    public Character Attacker { get => attacker;}
+    public Character Attacker { get => attacker; }
 
     private void Update()
     {
@@ -26,12 +28,13 @@ public class Bullet : MonoBehaviour
 
     public void Init(Vector3 direction, Character attacker, Action<Character, Bullet> callBack)
     {
-        Invoke(nameof(ReturnToPool), 1f);
+        Invoke(nameof(ReturnToPool), indexTime);
         onHitTarget = callBack;
-        this.transform.rotation = Quaternion.Euler(new Vector3 (-90,0,0));
+        this.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
         this.attacker = attacker;
         this.direction = direction;
         this.direction = this.direction.normalized;
+        Debug.Log(direction);
         this.gameObject.SetActive(true);
     }
 
@@ -53,10 +56,21 @@ public class Bullet : MonoBehaviour
             {
                 //bullet.OnHitTarget(this, bullet);
                 this.gameObject.SetActive(false);
+
                 if (other.CompareTag(CacheString.BOT_TAG))
                 {
+                    Player player = Attacker as Player;
+                    if (player != null)
+                    {
+                        GameManager.Instance.Index++;
+                        Debug.Log(GameManager.Instance.Index);
+                        DataManager.Instance.CoinData ++;
+                        GameManager.Instance.CoinText.text = DataManager.Instance.CoinData.ToString();
+                    }
+
                     ((Bot)character).DelayDead();
                     LeanPool.Despawn(this.gameObject);
+                    Attacker.Kill++;
                 }
 
                 if (other.CompareTag(CacheString.PLAYER_TAG))
@@ -64,17 +78,21 @@ public class Bullet : MonoBehaviour
                     ((Player)character).OnDeath();
                     LeanPool.Despawn(this.gameObject);
                     UIManager.Instance.OnLoseUI();
+                    Attacker.Kill++;
                 }
 
-                Attacker.gameObject.transform.localScale += new Vector3(Attacker.transform.localScale.x * 0.04f, Attacker.transform.localScale.y * 0.04f, Attacker.transform.localScale.z * 0.04f);
+                Attacker.gameObject.transform.localScale = (1f + Mathf.Log10(Attacker.Kill + 1f)) * Vector3.one;
+                //Attacker.Bullet.transform.localScale = ;
+                indexTime = 1f + Mathf.Log10(Attacker.Kill + 1f);
+                speed = 1f + Mathf.Log10(Attacker.Kill + 1f) * 7f;
                 OnHitTarget(character, this);
             }
         }
     }
 
-    public void OnHitTarget(Character victim,Bullet bullet)
+    public void OnHitTarget(Character victim, Bullet bullet)
     {
         onHitTarget?.Invoke(victim, bullet);
-    } 
+    }
 
 }

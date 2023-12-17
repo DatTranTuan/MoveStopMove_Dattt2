@@ -140,6 +140,7 @@ MonoBehaviour:
     m_Bits: 64
   firePos: {fileID: 2268296584382044665}
   headPos: {fileID: 854504976934867810}
+  armPos: {fileID: 3245050585974595796}
   skinned: {fileID: 9085473200753030141}
   agent: {fileID: 4124261032544131632}
   botPrefab: {fileID: 7587256198763046198}
@@ -482,6 +483,37 @@ Transform:
   m_Father: {fileID: 5617089458763129628}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8670192841290727609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3245050585974595796}
+  m_Layer: 9
+  m_Name: Shield - Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3245050585974595796
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8670192841290727609}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3637128694690095062}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &482428377307258996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -806,6 +838,11 @@ PrefabInstance:
 --- !u!95 &3260985473362470420 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 482428377307258996}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3637128694690095062 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5420008163957686366, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 482428377307258996}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &4885098014838754158 stripped
