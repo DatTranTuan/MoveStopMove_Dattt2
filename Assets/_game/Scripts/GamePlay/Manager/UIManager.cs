@@ -58,6 +58,7 @@ public class UIManager : Singleton<UIManager>
     public Text PriceShieldText { get => priceShieldText; set => priceShieldText = value; }
     public Text PricePantText { get => pricePantText; set => pricePantText = value; }
     public Text PriceHatText { get => priceHatText; set => priceHatText = value; }
+    public Button ButtonSelectShield { get => buttonSelectShield; set => buttonSelectShield = value; }
 
     private void OnEnable()
     {
@@ -78,7 +79,7 @@ public class UIManager : Singleton<UIManager>
         ButtonSelectPant.onClick.AddListener(OnSelectPantButton);
 
         buttonClickShieldShop.onClick.AddListener(OnClickShieldShop);
-        buttonSelectShield.onClick.AddListener(OnSelectShieldShop);
+        ButtonSelectShield.onClick.AddListener(OnSelectShieldShop);
 
         buttonCloseClothesShop.onClick.AddListener(OnCloseClothesShop);
         buttonClickClotheShop.onClick.AddListener(OnClickClotheShop);

@@ -14,6 +14,7 @@ public class PlayerData
 
     public List<int> hatList = new List<int>();
     public List<int> pantList = new List<int>();
+    public List<int> shieldList = new List<int>();
 
     public PlayerData() {
         weaponTypeData = WeaponType.Axe;
@@ -24,6 +25,7 @@ public class PlayerData
 
         hatList.Add(0);
         pantList.Add(0);
+        shieldList.Add(0);
     }
 
 }

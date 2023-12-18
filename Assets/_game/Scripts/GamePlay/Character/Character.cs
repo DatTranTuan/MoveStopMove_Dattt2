@@ -78,7 +78,7 @@ public class Character : MonoBehaviour
         animator.SetBool(CacheString.ATTACK_ANIMATION, isAttack);
         animator.SetBool(CacheString.IDLE_ANIMATION, isIdle);
         animator.SetBool(CacheString.DEAD_ANIMATION, isDead);
-        animator.SetBool(CacheString.DANCE_ANIMATION, IsDance);
+        //animator.SetBool(CacheString.DANCE_ANIMATION, IsDance);
     }
 
     public void Attack()

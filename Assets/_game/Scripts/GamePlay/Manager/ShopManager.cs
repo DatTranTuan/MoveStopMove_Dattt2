@@ -120,12 +120,27 @@ public class ShopManager : Singleton<ShopManager>
     public void OnClickShieldButton(ShieldData shieldData)
     {
         currentSelectShieldData = shieldData;
+        CheckShieldStatus(currentSelectShieldData);
     }
 
     public void OnClickEquipShieldButton ()
     {
         LevelManager.Instance.player.CurrentShieldType = currentSelectShieldData.shieldType;
         LevelManager.Instance.player.EquipShield();
+    }
+
+    public void OnClickBuyShieldButton()
+    {
+        LevelManager.Instance.player.CurrentShieldType = currentSelectShieldData.shieldType;
+        if (playerData.coin >= currentSelectShieldData.price)
+        {
+            playerData.coin -= currentSelectShieldData.price;
+            playerData.shieldList.Add((int)currentSelectShieldData.shieldType);
+            DataManager.Instance.SavePlayerData(playerData);
+            LevelManager.Instance.player.EquipShield();
+            GameManager.Instance.CoinText.text = DataManager.Instance.CoinData.ToString();
+            CheckShieldStatus(currentSelectShieldData);
+        }
     }
 
     public void OnCLickPantButton (PantData pantData)
@@ -256,6 +271,25 @@ public class ShopManager : Singleton<ShopManager>
             UIManager.Instance.PricePantText.text = pantData.price.ToString();
             UIManager.Instance.ButtonBuyPant.onClick.RemoveAllListeners();
             UIManager.Instance.ButtonBuyPant.onClick.AddListener(OnClickBuyPantButton);
+        }
+    }
+
+    private void CheckShieldStatus(ShieldData shieldData)
+    {
+        if (playerData.shieldList.Contains((int)shieldData.shieldType)) 
+        {
+            UIManager.Instance.ButtonSelectShield.gameObject.SetActive(true);
+            UIManager.Instance.ButtonBuyShield.gameObject.SetActive(false);
+            UIManager.Instance.ButtonSelectShield.onClick.RemoveAllListeners();
+            UIManager.Instance.ButtonSelectShield.onClick.AddListener(OnClickEquipShieldButton);
+        }
+        else
+        {
+            UIManager.Instance.ButtonSelectShield.gameObject.SetActive(false);
+            UIManager.Instance.ButtonBuyShield.gameObject.SetActive(true);
+            UIManager.Instance.PriceShieldText.text = shieldData.price.ToString();
+            UIManager.Instance.ButtonBuyShield.onClick.RemoveAllListeners();
+            UIManager.Instance.ButtonBuyShield.onClick.AddListener(OnClickBuyShieldButton);
         }
     }
 }
