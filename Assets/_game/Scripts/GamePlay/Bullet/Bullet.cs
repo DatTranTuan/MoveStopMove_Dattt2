@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private float rotateSpeed = 400f;
 
-    private float speed = 18f;
+    private float speed = 10f;
 
     private float indexTime = 1f;
     private Character attacker;

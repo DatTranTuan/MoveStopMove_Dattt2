@@ -234,6 +234,7 @@ public class ShopManager : Singleton<ShopManager>
         {
             UIManager.Instance.ButtonSelectHat.gameObject.SetActive(false);
             UIManager.Instance.ButtonBuyHat.gameObject.SetActive(true);
+            UIManager.Instance.PriceHatText.text = hatData.price.ToString();    
             UIManager.Instance.ButtonBuyHat.onClick.RemoveAllListeners();
             UIManager.Instance.ButtonBuyHat.onClick.AddListener(OnClickBuyHatButton);
         }
@@ -252,6 +253,7 @@ public class ShopManager : Singleton<ShopManager>
         {
             UIManager.Instance.ButtonSelectPant.gameObject.SetActive(false);
             UIManager.Instance.ButtonBuyPant.gameObject.SetActive(true);
+            UIManager.Instance.PricePantText.text = pantData.price.ToString();
             UIManager.Instance.ButtonBuyPant.onClick.RemoveAllListeners();
             UIManager.Instance.ButtonBuyPant.onClick.AddListener(OnClickBuyPantButton);
         }

@@ -33,13 +33,17 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Button buttonCloseClothesShop;
     [SerializeField] private Button buttonSelectHat;
     [SerializeField] private Button buttonBuyHat;
+    [SerializeField] private Text priceHatText;
 
     [SerializeField] private Button buttonClickPantShop;
     [SerializeField] private Button buttonSelectPant;
     [SerializeField] private Button buttonBuyPant;
+    [SerializeField] private Text pricePantText;
 
     [SerializeField] private Button buttonClickShieldShop;
     [SerializeField] private Button buttonSelectShield;
+    [SerializeField] private Button buttonBuyShield;
+    [SerializeField] private Text priceShieldText;
 
     [SerializeField] private Button buttonReloadGame;
 
@@ -50,6 +54,10 @@ public class UIManager : Singleton<UIManager>
     public Button ButtonBuyHat { get => buttonBuyHat; set => buttonBuyHat = value; }
     public Button ButtonSelectPant { get => buttonSelectPant; set => buttonSelectPant = value; }
     public Button ButtonBuyPant { get => buttonBuyPant; set => buttonBuyPant = value; }
+    public Button ButtonBuyShield { get => buttonBuyShield; set => buttonBuyShield = value; }
+    public Text PriceShieldText { get => priceShieldText; set => priceShieldText = value; }
+    public Text PricePantText { get => pricePantText; set => pricePantText = value; }
+    public Text PriceHatText { get => priceHatText; set => priceHatText = value; }
 
     private void OnEnable()
     {
