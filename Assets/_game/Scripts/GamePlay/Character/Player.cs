@@ -83,10 +83,10 @@ public class Player : Character
                 SetBoolAnimation();
             }
 
-            if (mainTarget != null)
+            if (MainTarget != null)
             {
                 Attack();
-                targetPoint.transform.position = mainTarget.transform.position + Vector3.down;
+                targetPoint.transform.position = MainTarget.transform.position + Vector3.down;
                 targetPoint.SetActive(true);
             }
             else

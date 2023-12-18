@@ -35,10 +35,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Button buttonBuyHat;
 
     [SerializeField] private Button buttonClickPantShop;
-    [SerializeField] private Button buttonSelectPantShop;
+    [SerializeField] private Button buttonSelectPant;
+    [SerializeField] private Button buttonBuyPant;
 
     [SerializeField] private Button buttonClickShieldShop;
-    [SerializeField] private Button buttonSelectShieldShop;
+    [SerializeField] private Button buttonSelectShield;
 
     [SerializeField] private Button buttonReloadGame;
 
@@ -47,6 +48,8 @@ public class UIManager : Singleton<UIManager>
 
     public Button ButtonSelectHat { get => buttonSelectHat; set => buttonSelectHat = value; }
     public Button ButtonBuyHat { get => buttonBuyHat; set => buttonBuyHat = value; }
+    public Button ButtonSelectPant { get => buttonSelectPant; set => buttonSelectPant = value; }
+    public Button ButtonBuyPant { get => buttonBuyPant; set => buttonBuyPant = value; }
 
     private void OnEnable()
     {
@@ -64,10 +67,10 @@ public class UIManager : Singleton<UIManager>
         ButtonSelectHat.onClick.AddListener(OnClickSelectHatButton);
 
         buttonClickPantShop.onClick.AddListener(OnClickPantShop);
-        buttonSelectPantShop.onClick.AddListener(OnSelectPantButton);
+        ButtonSelectPant.onClick.AddListener(OnSelectPantButton);
 
         buttonClickShieldShop.onClick.AddListener(OnClickShieldShop);
-        buttonSelectShieldShop.onClick.AddListener(OnSelectShieldShop);
+        buttonSelectShield.onClick.AddListener(OnSelectShieldShop);
 
         buttonCloseClothesShop.onClick.AddListener(OnCloseClothesShop);
         buttonClickClotheShop.onClick.AddListener(OnClickClotheShop);
@@ -153,6 +156,7 @@ public class UIManager : Singleton<UIManager>
         ShopManager.Instance.SpawnHatShop();
         ShopManager.Instance.SpawnPantShop();
         ShopManager.Instance.SpawnShieldShop();
+        //LevelManager.Instance.player.IsDance = true;
     }
 
     public void OnClickHatShop()

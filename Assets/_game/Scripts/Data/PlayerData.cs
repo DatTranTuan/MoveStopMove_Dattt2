@@ -13,6 +13,7 @@ public class PlayerData
     public int coin;
 
     public List<int> hatList = new List<int>();
+    public List<int> pantList = new List<int>();
 
     public PlayerData() {
         weaponTypeData = WeaponType.Axe;
@@ -22,6 +23,7 @@ public class PlayerData
         coin = 0;
 
         hatList.Add(0);
+        pantList.Add(0);
     }
 
 }

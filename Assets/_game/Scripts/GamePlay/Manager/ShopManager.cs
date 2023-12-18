@@ -131,12 +131,27 @@ public class ShopManager : Singleton<ShopManager>
     public void OnCLickPantButton (PantData pantData)
     {
         currentSelectPantData = pantData;
+        CheckPantStatus(currentSelectPantData);
     }
 
     public void OnClickEquipPantButton ()
     {
         LevelManager.Instance.player.CurrentPantType = currentSelectPantData.pantType;
         LevelManager.Instance.player.EquipPant();
+    }
+
+    public void OnClickBuyPantButton()
+    {
+        LevelManager.Instance.player.CurrentPantType = currentSelectPantData.pantType;
+        if (playerData.coin >= currentSelectPantData.price)
+        {
+            playerData.coin -= currentSelectPantData.price;
+            playerData.pantList.Add((int)currentSelectPantData.pantType);
+            DataManager.Instance.SavePlayerData(playerData);
+            LevelManager.Instance.player.EquipPant();
+            GameManager.Instance.CoinText.text = DataManager.Instance.CoinData.ToString();
+            CheckPantStatus(currentSelectPantData);
+        }
     }
 
     public void OnCLickHatButton (HatData hatData)
@@ -223,5 +238,22 @@ public class ShopManager : Singleton<ShopManager>
             UIManager.Instance.ButtonBuyHat.onClick.AddListener(OnClickBuyHatButton);
         }
     }
-   
+    
+    private void CheckPantStatus(PantData pantData)
+    {
+        if (playerData.pantList.Contains((int)pantData.pantType)) 
+        {
+            UIManager.Instance.ButtonSelectPant.gameObject.SetActive(true);
+            UIManager.Instance.ButtonBuyPant.gameObject.SetActive(false);
+            UIManager.Instance.ButtonSelectPant.onClick.RemoveAllListeners();
+            UIManager.Instance.ButtonSelectPant.onClick.AddListener(OnClickEquipPantButton);
+        }
+        else
+        {
+            UIManager.Instance.ButtonSelectPant.gameObject.SetActive(false);
+            UIManager.Instance.ButtonBuyPant.gameObject.SetActive(true);
+            UIManager.Instance.ButtonBuyPant.onClick.RemoveAllListeners();
+            UIManager.Instance.ButtonBuyPant.onClick.AddListener(OnClickBuyPantButton);
+        }
+    }
 }

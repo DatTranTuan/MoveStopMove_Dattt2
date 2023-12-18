@@ -14,7 +14,7 @@ public class Character : MonoBehaviour
     [SerializeField] protected Transform armPos;
     [SerializeField] protected SkinnedMeshRenderer skinned;
 
-    protected bool CanAttack => !isAttack && isIdle == true && mainTarget != null;
+    protected bool CanAttack => !isAttack && isIdle == true && MainTarget != null;
 
     private Bot bot;
 
@@ -46,7 +46,8 @@ public class Character : MonoBehaviour
     private bool isAttack = false;
     private bool isDead;
     private bool isAlive;
-    private bool inRange; // Later: Check inRange or not 
+    private bool isDance;
+    //private bool inRange; // Later: Check inRange or not 
 
     protected float bulletSpeed = 500f;
     protected List<Bullet> bulletList = new List<Bullet>();
@@ -66,6 +67,9 @@ public class Character : MonoBehaviour
     public Hat HatSpawn { get => hatSpawn; set => hatSpawn = value; }
     public Shield ShieldSpawn { get => shieldSpawn; set => shieldSpawn = value; }
     public int Kill { get => kill; set => kill = value; }
+    public Character MainTarget { get => mainTarget; set => mainTarget = value; }
+    public List<Character> OtherTarget { get => otherTarget; set => otherTarget = value; }
+    public bool IsDance { get => isDance; set => isDance = value; }
 
     //public Weapon CurrentWeapon { get => currentWeapon; set => currentWeapon = value; }
 
@@ -74,13 +78,14 @@ public class Character : MonoBehaviour
         animator.SetBool(CacheString.ATTACK_ANIMATION, isAttack);
         animator.SetBool(CacheString.IDLE_ANIMATION, isIdle);
         animator.SetBool(CacheString.DEAD_ANIMATION, isDead);
+        animator.SetBool(CacheString.DANCE_ANIMATION, IsDance);
     }
 
     public void Attack()
     {
         if (CanAttack)
         {
-            transform.LookAt(new Vector3(mainTarget.transform.position.x, transform.position.y, mainTarget.transform.position.z));
+            transform.LookAt(new Vector3(MainTarget.transform.position.x, transform.position.y, MainTarget.transform.position.z));
             isAttack = true;
             SetBoolAnimation();
             StartCoroutine(DelayBeforeAttack(0.25f));
@@ -108,20 +113,20 @@ public class Character : MonoBehaviour
 
     public void Fire()
     {
-        if (mainTarget == null)
+        if (MainTarget == null)
         {
             direc = transform.forward;
         }
         else
         {
-            direc = mainTarget.transform.position - firePos.position;
+            direc = MainTarget.transform.position - firePos.position;
         }
 
         // Shoot
         Bullet spawnBullet;
         // if pool doesn't have any bullet then it will spawn
         spawnBullet = LeanPool.Spawn(bullet, firePos.position, Quaternion.identity);
-        spawnBullet.transform.localScale = (1f + Mathf.Log10(kill + 1f)) * Vector3.one;
+        //spawnBullet.transform.localScale = (1f + Mathf.Log10(kill + 1f)) * Vector3.one;
         direc.y = 0f;
         spawnBullet.Init(direc, this, OnHitTarget);
     }
@@ -151,9 +156,9 @@ public class Character : MonoBehaviour
     {
         if (IsAlive)
         {
-            if (mainTarget is null)
+            if (MainTarget is null)
             {
-                mainTarget = target;
+                MainTarget = target;
             }
             else
             {
@@ -164,16 +169,16 @@ public class Character : MonoBehaviour
 
     protected void OnTargetExit(Character target)
     {
-        if (mainTarget == target || !IsAlive)
+        if (MainTarget == target || !IsAlive)
         {
             if (otherTarget.Count > 0)
             {
-                mainTarget = otherTarget[0];
+                MainTarget = otherTarget[0];
                 otherTarget.RemoveAt(0);
             }
             else
             {
-                mainTarget = null;
+                MainTarget = null;
             }
         }
         else if (!IsAlive)
