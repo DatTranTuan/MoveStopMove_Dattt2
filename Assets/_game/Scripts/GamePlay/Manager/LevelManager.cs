@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -8,11 +9,20 @@ public class LevelManager : Singleton<LevelManager>
 
     [SerializeField] public Player playerPrefab;
 
+    [SerializeField] private Text survivorText;
+
     public Player player;
+    public int survivorIndex;
 
     private void Start()
     {
         SpawnPlayer();
+        survivorIndex = 20;
+    }
+
+    private void Update()
+    {
+        survivorText.text = survivorIndex.ToString();
     }
 
     private void SpawnPlayer()

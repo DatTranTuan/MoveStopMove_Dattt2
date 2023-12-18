@@ -39,12 +39,13 @@ public class BotManager : Singleton<BotManager>
     public void ReturnToPool(Bot bot)
     {
         botIndex--;
+        LevelManager.Instance.survivorIndex--;
         bot.agent.ResetPath();
         stack.Push(bot);
         bot.gameObject.SetActive(false);
         bot.MainTarget = null;
         bot.OtherTarget.Clear();
-        if (BotManager.Instance.botIndex <= 2)
+        if (BotManager.Instance.botIndex <= 5)
         {
             SpawnBot(bot);
         }
