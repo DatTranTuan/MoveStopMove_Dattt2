@@ -23,6 +23,10 @@ public class LevelManager : Singleton<LevelManager>
     private void Update()
     {
         survivorText.text = survivorIndex.ToString();
+        if (survivorIndex == 1)
+        {
+            LevelManager.Instance.player.Winning();
+        }
     }
 
     private void SpawnPlayer()
@@ -33,8 +37,12 @@ public class LevelManager : Singleton<LevelManager>
         CameraFollow.Instance.Player = player;
         CameraFollow.Instance.VirtualCamera.Follow = player.transform;
         CameraFollow.Instance.VirtualCamera.LookAt = player.transform;
-        CameraFollow.Instance.VirtualCamera.m_Lens.FieldOfView = 20;
-        CameraFollow.Instance.Cam.transform.rotation = Quaternion.Euler(20f, 0f, 0f);
+        CameraFollow.Instance.VirtualCamera.m_Lens.FieldOfView = 30;
+        CameraFollow.Instance.Cam.transform.rotation = Quaternion.Euler(30f, 0f, 0f);
     }
 
+    public void CameraPlus()
+    {
+        CameraFollow.Instance.VirtualCamera.m_Lens.FieldOfView += 2;
+    }
 }

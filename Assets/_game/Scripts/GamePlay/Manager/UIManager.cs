@@ -8,6 +8,7 @@ using Lean.Pool;
 public class UIManager : Singleton<UIManager>
 {
     private float countDown = 5f;
+    private bool isContinue;
 
     [SerializeField] private Text countDownText;
     [SerializeField] private GameObject circleCountDown;
@@ -18,7 +19,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject hatShopCanvas;
     [SerializeField] private GameObject pantShopCanvas;
     [SerializeField] private GameObject shieldShopCanvas;
-    [SerializeField] private GameObject loseCanvas;
+    [SerializeField] private GameObject reviveCanvas;
+    [SerializeField] private GameObject rankingCanvas;
+
+    public GameObject winningCanvas;
 
     [SerializeField] private Button buttonClickPlay;
     [SerializeField] private Button buttonClickClotheShop;
@@ -45,7 +49,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Button buttonBuyShield;
     [SerializeField] private Text priceShieldText;
 
-    [SerializeField] private Button buttonReloadGame;
+    [SerializeField] private Button buttonCloseRevieCanvas;
+    [SerializeField] private Text rankingText;
+    [SerializeField] private Button buttonRevivePlayer;
+    [SerializeField] private Button buttonTouchReload;
+    [SerializeField] private Button buttonTouchReload2;
 
     private ShopManager shopManager;
     private Player player;
@@ -70,7 +78,7 @@ public class UIManager : Singleton<UIManager>
         buttonPreWeapon.onClick.AddListener(PressPrevWeaponShop);
         buttonEquipWeapon.onClick.AddListener(PressEquipWeaponShop);
 
-        buttonReloadGame.onClick.AddListener(RevivePlayer);
+        buttonRevivePlayer.onClick.AddListener(RevivePlayer);
 
         buttonClickHatShop.onClick.AddListener(OnClickHatShop);
         ButtonSelectHat.onClick.AddListener(OnClickSelectHatButton);
@@ -83,11 +91,16 @@ public class UIManager : Singleton<UIManager>
 
         buttonCloseClothesShop.onClick.AddListener(OnCloseClothesShop);
         buttonClickClotheShop.onClick.AddListener(OnClickClotheShop);
+
+        buttonCloseRevieCanvas.onClick.AddListener(OnClickCloseUI);
+        buttonTouchReload.onClick.AddListener(OnClickTouch);
+        buttonTouchReload2.onClick.AddListener(OnClickTouch);
     }
 
     private void Start()
     {
         Time.timeScale = 0;
+        
     }
 
     private IEnumerator Countdown()
@@ -100,6 +113,10 @@ public class UIManager : Singleton<UIManager>
             yield return new WaitForSeconds(Time.deltaTime);
         }
         countDownText.text = "0";
+        if (countDown <= 0.1f && isContinue)
+        {
+            OnClickCloseUI();
+        }
         countDown = 5f;
     }
 
@@ -124,11 +141,24 @@ public class UIManager : Singleton<UIManager>
         weaponShopCanvas.SetActive(false);
     }
 
-    public void OnLoseUI()
+    public void OnReviveUI()
     {
-        loseCanvas.SetActive(true);
+        reviveCanvas.SetActive(true);
         StopAllCoroutines();
         StartCoroutine(Countdown());
+    }
+     public void OnClickCloseUI()
+    {
+        isContinue = false;
+        reviveCanvas.SetActive(false);
+        rankingCanvas.SetActive(true);
+        rankingText.text = "#" + LevelManager.Instance.survivorIndex.ToString();
+    }
+
+    public void OnClickTouch()
+    {
+        isContinue = true;
+        SceneManager.LoadScene(CacheString.SCENE_NAME);
     }
 
     public void PressNextWeaponShop()
@@ -162,9 +192,9 @@ public class UIManager : Singleton<UIManager>
         hatShopCanvas.SetActive(true);
         pantShopCanvas.SetActive(false);
         shieldShopCanvas.SetActive(false);
-        ShopManager.Instance.SpawnHatShop();
-        ShopManager.Instance.SpawnPantShop();
-        ShopManager.Instance.SpawnShieldShop();
+        //ShopManager.Instance.SpawnHatShop();
+        //ShopManager.Instance.SpawnPantShop();
+        //ShopManager.Instance.SpawnShieldShop();
         //LevelManager.Instance.player.IsDance = true;
     }
 
@@ -221,7 +251,7 @@ public class UIManager : Singleton<UIManager>
     {
         //SceneManager.LoadScene(CacheString.SCENE_NAME);
         LevelManager.Instance.player.OnRevive();
-        loseCanvas.SetActive(false);
+        reviveCanvas.SetActive(false);
     }
 
     

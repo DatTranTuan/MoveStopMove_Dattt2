@@ -18,9 +18,6 @@ public class CameraFollow : Singleton<CameraFollow>
 
     //private void Start()
     //{
-    //    VirtualCamera.Follow = Player.transform;
-    //    VirtualCamera.LookAt = Player.transform;
-    //    VirtualCamera.m_Lens.FieldOfView = 20;
     //    Cam.transform.rotation = Quaternion.Euler(20f, 0f, 0f);
     //}
 
@@ -35,7 +32,7 @@ public class CameraFollow : Singleton<CameraFollow>
 
     public void SmoothCameraChange()
     {
-        Cam.transform.rotation = Quaternion.Euler(21f, 0f, 0f);
+        Cam.transform.rotation = Quaternion.Euler(41f, 0f, 0f);
         //virtualCamera.m_Lens.FieldOfView = 100;
     }
 }

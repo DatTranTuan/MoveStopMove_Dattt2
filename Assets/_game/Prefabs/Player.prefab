@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff319854d761294f83a8eb87f59bf20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 7
   animator: {fileID: 365369029681481055}
   enemyLayerMask:
     serializedVersion: 2
@@ -356,6 +356,8 @@ MonoBehaviour:
   skinned: {fileID: 6216446938063409334}
   rb: {fileID: 6585213529387026720}
   targetPoint: {fileID: 3058092901126770121}
+  enterMaterial: {fileID: 2100000, guid: 00018e246947d714cba0b62ee3d92450, type: 2}
+  exitMaterial: {fileID: 2100000, guid: 1019c7dc8bafdeb48a98444cb0d59600, type: 2}
 --- !u!95 &5780027371570162325
 Animator:
   serializedVersion: 5

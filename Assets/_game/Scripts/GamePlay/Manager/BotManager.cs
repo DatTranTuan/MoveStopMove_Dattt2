@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BotManager : Singleton<BotManager>
 {
-    private int botIndex = 10;
+    private int botIndex = 20;
 
     public static Stack<Bot> stack = new Stack<Bot>();
 
@@ -45,7 +45,7 @@ public class BotManager : Singleton<BotManager>
         bot.gameObject.SetActive(false);
         bot.MainTarget = null;
         bot.OtherTarget.Clear();
-        if (BotManager.Instance.botIndex <= 5)
+        if (BotManager.Instance.botIndex > LevelManager.Instance.survivorIndex)
         {
             SpawnBot(bot);
         }

@@ -82,6 +82,9 @@ public class ShopManager : Singleton<ShopManager>
             weaponData = DataManager.Instance.GetWeaponData(currentWeaponShop);
         }
 
+        SpawnHatShop();
+        SpawnPantShop();
+        SpawnShieldShop();
 
         //hatType = HatType.Arrow;
         //if (hatData == null)
@@ -108,7 +111,7 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
-    public void SpawnShieldShop ()
+    public void SpawnShieldShop()
     {
         for (int i = 0; i < listShield.Count; i++)
         {
@@ -123,7 +126,7 @@ public class ShopManager : Singleton<ShopManager>
         CheckShieldStatus(currentSelectShieldData);
     }
 
-    public void OnClickEquipShieldButton ()
+    public void OnClickEquipShieldButton()
     {
         LevelManager.Instance.player.CurrentShieldType = currentSelectShieldData.shieldType;
         LevelManager.Instance.player.EquipShield();
@@ -143,13 +146,13 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
-    public void OnCLickPantButton (PantData pantData)
+    public void OnCLickPantButton(PantData pantData)
     {
         currentSelectPantData = pantData;
         CheckPantStatus(currentSelectPantData);
     }
 
-    public void OnClickEquipPantButton ()
+    public void OnClickEquipPantButton()
     {
         LevelManager.Instance.player.CurrentPantType = currentSelectPantData.pantType;
         LevelManager.Instance.player.EquipPant();
@@ -169,7 +172,7 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
-    public void OnCLickHatButton (HatData hatData)
+    public void OnCLickHatButton(HatData hatData)
     {
         currentSelectHatData = hatData;
         CheckHatStatus(currentSelectHatData);
@@ -237,32 +240,50 @@ public class ShopManager : Singleton<ShopManager>
 
     private void CheckHatStatus(HatData hatData)
     {
-        if (playerData.hatList.Contains((int)hatData.hatType)) 
+        if (playerData.hatList.Contains((int)hatData.hatType))
         {
-            UIManager.Instance.ButtonSelectHat.gameObject.SetActive(true);
-            UIManager.Instance.ButtonBuyHat.gameObject.SetActive(false);
-            UIManager.Instance.ButtonSelectHat.onClick.RemoveAllListeners();
-            UIManager.Instance.ButtonSelectHat.onClick.AddListener(OnClickEquipHatButton);
-            
+            if (LevelManager.Instance.player.CurrentHatType == hatData.hatType)
+            {
+                UIManager.Instance.ButtonSelectHat.gameObject.SetActive(false);
+                UIManager.Instance.ButtonBuyHat.gameObject.SetActive(false);
+            }
+            else
+            {
+                UIManager.Instance.ButtonSelectHat.gameObject.SetActive(true);
+                UIManager.Instance.ButtonBuyHat.gameObject.SetActive(false);
+                UIManager.Instance.ButtonSelectHat.onClick.RemoveAllListeners();
+                UIManager.Instance.ButtonSelectHat.onClick.AddListener(OnClickEquipHatButton);
+
+            }
+
         }
         else
         {
             UIManager.Instance.ButtonSelectHat.gameObject.SetActive(false);
             UIManager.Instance.ButtonBuyHat.gameObject.SetActive(true);
-            UIManager.Instance.PriceHatText.text = hatData.price.ToString();    
+            UIManager.Instance.PriceHatText.text = hatData.price.ToString();
             UIManager.Instance.ButtonBuyHat.onClick.RemoveAllListeners();
             UIManager.Instance.ButtonBuyHat.onClick.AddListener(OnClickBuyHatButton);
         }
     }
-    
+
     private void CheckPantStatus(PantData pantData)
     {
-        if (playerData.pantList.Contains((int)pantData.pantType)) 
+        if (playerData.pantList.Contains((int)pantData.pantType))
         {
-            UIManager.Instance.ButtonSelectPant.gameObject.SetActive(true);
-            UIManager.Instance.ButtonBuyPant.gameObject.SetActive(false);
-            UIManager.Instance.ButtonSelectPant.onClick.RemoveAllListeners();
-            UIManager.Instance.ButtonSelectPant.onClick.AddListener(OnClickEquipPantButton);
+            if (LevelManager.Instance.player.CurrentPantType == pantData.pantType)
+            {
+                UIManager.Instance.ButtonSelectPant.gameObject.SetActive(false);
+                UIManager.Instance.ButtonBuyPant.gameObject.SetActive(false);
+            }
+            else
+            {
+                UIManager.Instance.ButtonSelectPant.gameObject.SetActive(true);
+                UIManager.Instance.ButtonBuyPant.gameObject.SetActive(false);
+                UIManager.Instance.ButtonSelectPant.onClick.RemoveAllListeners();
+                UIManager.Instance.ButtonSelectPant.onClick.AddListener(OnClickEquipPantButton);
+
+            }
         }
         else
         {
@@ -276,12 +297,20 @@ public class ShopManager : Singleton<ShopManager>
 
     private void CheckShieldStatus(ShieldData shieldData)
     {
-        if (playerData.shieldList.Contains((int)shieldData.shieldType)) 
+        if (playerData.shieldList.Contains((int)shieldData.shieldType))
         {
-            UIManager.Instance.ButtonSelectShield.gameObject.SetActive(true);
-            UIManager.Instance.ButtonBuyShield.gameObject.SetActive(false);
-            UIManager.Instance.ButtonSelectShield.onClick.RemoveAllListeners();
-            UIManager.Instance.ButtonSelectShield.onClick.AddListener(OnClickEquipShieldButton);
+            if (LevelManager.Instance.player.CurrentShieldType == shieldData.shieldType)
+            {
+                UIManager.Instance.ButtonSelectShield.gameObject.SetActive(false);
+                UIManager.Instance.ButtonBuyShield.gameObject.SetActive(false);
+            }
+            else
+            {
+                UIManager.Instance.ButtonSelectShield.gameObject.SetActive(true);
+                UIManager.Instance.ButtonBuyShield.gameObject.SetActive(false);
+                UIManager.Instance.ButtonSelectShield.onClick.RemoveAllListeners();
+                UIManager.Instance.ButtonSelectShield.onClick.AddListener(OnClickEquipShieldButton);
+            }
         }
         else
         {

@@ -34,7 +34,6 @@ public class Bullet : MonoBehaviour
         this.attacker = attacker;
         this.direction = direction;
         this.direction = this.direction.normalized;
-        Debug.Log(direction);
         this.gameObject.SetActive(true);
     }
 
@@ -66,6 +65,7 @@ public class Bullet : MonoBehaviour
                         Debug.Log(GameManager.Instance.Index);
                         DataManager.Instance.CoinData ++;
                         GameManager.Instance.CoinText.text = DataManager.Instance.CoinData.ToString();
+                        LevelManager.Instance.CameraPlus();
                     }
 
                     ((Bot)character).DelayDead();
@@ -77,14 +77,14 @@ public class Bullet : MonoBehaviour
                 {
                     ((Player)character).OnDeath();
                     LeanPool.Despawn(this.gameObject);
-                    UIManager.Instance.OnLoseUI();
+                    UIManager.Instance.OnReviveUI();
                     Attacker.Kill++;
                 }
 
                 Attacker.gameObject.transform.localScale = (1f + Mathf.Log10(Attacker.Kill + 1f)) * Vector3.one;
-                //Attacker.Bullet.transform.localScale = ;
+                //Attacker.Bullet.transform.localScale += new Vector3(Attacker.Bullet.transform.localScale.x * 0.1f, Attacker.Bullet.transform.localScale.y * 0.1f, Attacker.Bullet.transform.localScale.z * 0.1f);
                 indexTime = 1f + Mathf.Log10(Attacker.Kill + 1f);
-                speed = 1f + Mathf.Log10(Attacker.Kill + 1f) * 7f;
+                speed = 1f + Mathf.Log10(Attacker.Kill + 1f) * 10f;
                 OnHitTarget(character, this);
             }
         }

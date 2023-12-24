@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lean.Pool;
-using UnityEditor.Experimental.GraphView;
 
 public class Character : MonoBehaviour
 {
@@ -78,7 +77,7 @@ public class Character : MonoBehaviour
         animator.SetBool(CacheString.ATTACK_ANIMATION, isAttack);
         animator.SetBool(CacheString.IDLE_ANIMATION, isIdle);
         animator.SetBool(CacheString.DEAD_ANIMATION, isDead);
-        //animator.SetBool(CacheString.DANCE_ANIMATION, IsDance);
+        animator.SetBool(CacheString.DANCE_ANIMATION, isDance);
     }
 
     public void Attack()
@@ -126,12 +125,12 @@ public class Character : MonoBehaviour
         Bullet spawnBullet;
         // if pool doesn't have any bullet then it will spawn
         spawnBullet = LeanPool.Spawn(bullet, firePos.position, Quaternion.identity);
-        //spawnBullet.transform.localScale = (1f + Mathf.Log10(kill + 1f)) * Vector3.one;
+        spawnBullet.transform.localScale += new Vector3(spawnBullet.transform.localScale.x * 0.1f, spawnBullet.transform.localScale.y * 0.1f, spawnBullet.transform.localScale.z * 0.1f);
         direc.y = 0f;
         spawnBullet.Init(direc, this, OnHitTarget);
     }
 
-    protected void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == CacheString.CHARACTER_LAYER)
         {
@@ -141,9 +140,11 @@ public class Character : MonoBehaviour
                 OnTargetEnter(target);
             }
         }
+
+       
     }
 
-    protected void OnTriggerExit(Collider other)
+    public virtual void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == CacheString.CHARACTER_LAYER)
         {

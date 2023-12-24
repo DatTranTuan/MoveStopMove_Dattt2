@@ -10,6 +10,8 @@ public class Player : Character
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject targetPoint;
+    [SerializeField] public Material enterMaterial;
+    [SerializeField] public Material exitMaterial;
 
     private WeaponType currentWeaponType;
     private HatType currentHatType;
@@ -104,6 +106,7 @@ public class Player : Character
         IsIdle = false;
         isPlayAble = false;
         SetBoolAnimation();
+        LevelManager.Instance.player.gameObject.layer = CacheString.DEFAULT_LAYER;
         targetPoint.SetActive(false);
         targetPoint.transform.position = transform.position;
         DataManager.Instance.SavePlayerData(DataManager.Instance.GetPlayerData());
@@ -117,6 +120,7 @@ public class Player : Character
         IsIdle = true;
         IsDead = false;
         SetBoolAnimation();
+        LevelManager.Instance.player.gameObject.layer = CacheString.CHARACTER_LAYER;
     }
 
     public void EquipWeapon()
@@ -143,5 +147,32 @@ public class Player : Character
     {
         ChangeShield(currentShieldType);
         DataManager.Instance.SaveShieldPlayerData(LevelManager.Instance.player.currentShieldType);
+    }
+
+    public void Winning()
+    {
+        UIManager.Instance.winningCanvas.SetActive(true);
+        LevelManager.Instance.player.IsDance = true;
+        SetBoolAnimation();
+    }
+
+    public override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+        if (other.gameObject.layer == CacheString.CUP_LAYER)
+        {
+            Cup cp = other.GetComponent<Cup>();
+            cp.ChangeMaterial(enterMaterial);
+        }
+    }
+
+    public override void OnTriggerExit(Collider other)
+    {
+        base.OnTriggerExit(other);
+        if (other.gameObject.layer == CacheString.CUP_LAYER)
+        {
+            Cup cp = other.GetComponent<Cup>();
+            cp.ChangeMaterial(exitMaterial);
+        }
     }
 }
