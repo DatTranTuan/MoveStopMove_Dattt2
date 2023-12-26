@@ -75,10 +75,13 @@ public class Bullet : MonoBehaviour
 
                 if (other.CompareTag(CacheString.PLAYER_TAG))
                 {
-                    ((Player)character).OnDeath();
-                    LeanPool.Despawn(this.gameObject);
-                    UIManager.Instance.OnReviveUI();
-                    Attacker.Kill++;
+                    if (!LevelManager.Instance.player.isImmune)
+                    {
+                        ((Player)character).OnDeath();
+                        UIManager.Instance.OnReviveUI();
+                        Attacker.Kill++;
+                        LeanPool.Despawn(this.gameObject);
+                    }
                 }
 
                 Attacker.gameObject.transform.localScale = (1f + Mathf.Log10(Attacker.Kill + 1f)) * Vector3.one;

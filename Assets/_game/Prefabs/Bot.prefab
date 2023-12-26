@@ -417,7 +417,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7641540041482265691}
   - component: {fileID: 3169723639711984707}
-  m_Layer: 9
+  m_Layer: 7
   m_Name: circle-outline-big
   m_TagString: Untagged
   m_Icon: {fileID: 0}

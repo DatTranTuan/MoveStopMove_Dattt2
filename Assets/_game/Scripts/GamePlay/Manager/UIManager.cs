@@ -142,7 +142,7 @@ public class UIManager : Singleton<UIManager>
 
     public void OnReviveUI()
     {
-        isContinue = false;
+        //isContinue = false;
         countDown = 5f;
         reviveCanvas.SetActive(true);
         StopAllCoroutines();
@@ -251,6 +251,7 @@ public class UIManager : Singleton<UIManager>
     public void RevivePlayer()
     {
         //SceneManager.LoadScene(CacheString.SCENE_NAME);
+        StopAllCoroutines();
         countDown = 5f;
         LevelManager.Instance.player.OnRevive();
         reviveCanvas.SetActive(false);

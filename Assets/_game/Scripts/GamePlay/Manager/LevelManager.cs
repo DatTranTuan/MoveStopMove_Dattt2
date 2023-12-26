@@ -1,7 +1,9 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -13,6 +15,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public Player player;
     public int survivorIndex;
+
 
     private void Start()
     {
@@ -43,6 +46,6 @@ public class LevelManager : Singleton<LevelManager>
 
     public void CameraPlus()
     {
-        CameraFollow.Instance.VirtualCamera.m_Lens.FieldOfView += 2;
+        CameraFollow.Instance.VirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance++;
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lean.Pool;
+using System;
 
 public class Character : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Character : MonoBehaviour
     [SerializeField] protected Transform headPos;
     [SerializeField] protected Transform armPos;
     [SerializeField] protected SkinnedMeshRenderer skinned;
+
+    public Action<Character> onDeath;
 
     protected bool CanAttack => !isAttack && isIdle == true && MainTarget != null;
 
@@ -156,22 +159,32 @@ public class Character : MonoBehaviour
 
     public void OnTargetEnter(Character target)
     {
-        if (IsAlive)
+        if (target == null)
         {
-            if (MainTarget is null)
-            {
-                MainTarget = target;
-            }
-            else
-            {
-                otherTarget.Add(target);
-            }
+            return;
         }
+
+        if (MainTarget is null)
+        {
+            MainTarget = target;
+        }
+        else
+        {
+            otherTarget.Add(target);
+        }
+        target.onDeath += OnTargetExit;
     }
 
     protected void OnTargetExit(Character target)
     {
-        if (MainTarget == target || !IsAlive)
+        if (target == null)
+        {
+            return;
+        }
+
+        target.onDeath -= OnTargetExit;
+
+        if (MainTarget == target)
         {
             if (otherTarget.Count > 0)
             {
@@ -182,10 +195,6 @@ public class Character : MonoBehaviour
             {
                 MainTarget = null;
             }
-        }
-        else if (!IsAlive)
-        {
-            otherTarget.Remove(target);
         }
         else
         {
@@ -211,7 +220,7 @@ public class Character : MonoBehaviour
         WeponSpawn = Instantiate(weaponData.weapon, firePos);
     }
 
-    public void ChangeHat (HatType hatType)
+    public void ChangeHat(HatType hatType)
     {
         hatData = DataManager.Instance.listHatData[(int)hatType];
         if (hatSpawn != null)

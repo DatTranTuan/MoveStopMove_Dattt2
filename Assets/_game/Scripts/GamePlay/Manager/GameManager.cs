@@ -47,10 +47,10 @@ public class GameManager : Singleton<GameManager>
             giftCountDown--;
             if (giftCountDown <= 5f)
             {
-                LevelManager.Instance.player.gameObject.layer = CacheString.DEFAULT_LAYER;
+                LevelManager.Instance.player.isImmune = true;
             }
         }
-        LevelManager.Instance.player.gameObject.layer = CacheString.CHARACTER_LAYER;
+        LevelManager.Instance.player.isImmune = false;
         giftCountDown = 5f;
     }
 

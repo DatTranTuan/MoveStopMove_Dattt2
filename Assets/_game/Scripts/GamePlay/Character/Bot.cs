@@ -89,41 +89,9 @@ public class Bot : Character
         }
     }
 
-    //private void SpawnBot()
-    //{
-    //    if (stack.Count > 0)
-    //    {
-    //        Bot spawnBot;
-    //        spawnBot = stack.Pop();
-    //        spawnBot.gameObject.SetActive(true);
-    //        spawnBot.gameObject.transform.position = new Vector3(UnityEngine.Random.Range(-10, 11), 0, UnityEngine.Random.Range(-9, 10));
-    //        IsAlive = true;
-    //        agent.ResetPath();
-    //    }
-    //    else
-    //    {
-    //        Instantiate(botPrefab, randomPos, Quaternion.identity);
-    //        OnInit();
-    //    }
-    //}
-
-    
-
-    //public void ReturnToPool()
-    //{
-    //    agent.ResetPath();
-    //    stack.Push(this);
-    //    this.gameObject.SetActive(false);
-    //    this.MainTarget = null;
-    //    this.otherTarget.Clear();
-    //    if (BotManager.Instance.botIndex <= 7)
-    //    {
-    //        SpawnBot();
-    //    }
-    //}
-
     public IEnumerator OnDeath()
     {
+        onDeath?.Invoke(this);
         InRange = false;
         this.gameObject.layer = 0;
         IsAlive = false;

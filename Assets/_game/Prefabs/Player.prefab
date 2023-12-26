@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2987622684739901542}
   - component: {fileID: 8350455408462815469}
   - component: {fileID: 1391525847408658117}
-  m_Layer: 9
+  m_Layer: 7
   m_Name: circle-outline-big
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,6 +358,7 @@ MonoBehaviour:
   targetPoint: {fileID: 3058092901126770121}
   enterMaterial: {fileID: 2100000, guid: 00018e246947d714cba0b62ee3d92450, type: 2}
   exitMaterial: {fileID: 2100000, guid: 1019c7dc8bafdeb48a98444cb0d59600, type: 2}
+  isImmune: 0
 --- !u!95 &5780027371570162325
 Animator:
   serializedVersion: 5

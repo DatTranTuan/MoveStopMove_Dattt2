@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class CameraFollow : Singleton<CameraFollow>
 {
@@ -16,10 +17,6 @@ public class CameraFollow : Singleton<CameraFollow>
     public GameObject Cam { get => cam; set => cam = value; }
     public CinemachineVirtualCamera VirtualCamera { get => virtualCamera; set => virtualCamera = value; }
 
-    //private void Start()
-    //{
-    //    Cam.transform.rotation = Quaternion.Euler(20f, 0f, 0f);
-    //}
 
     private void Update()
     {

@@ -22,6 +22,8 @@ public class Player : Character
     private Player player;
     private PlayerData playerData;
 
+    public bool isImmune = false;
+
     public Joystick Joystick { get => joystick; set => joystick = value; }
     public HatType CurrentHatType { get => currentHatType; set => currentHatType = value; }
     public PantType CurrentPantType { get => currentPantType; set => currentPantType = value; }
@@ -100,6 +102,7 @@ public class Player : Character
 
     public void OnDeath()
     {
+        onDeath?.Invoke(this);
         InRange = false;
         IsAlive = false;
         IsDead = true;
