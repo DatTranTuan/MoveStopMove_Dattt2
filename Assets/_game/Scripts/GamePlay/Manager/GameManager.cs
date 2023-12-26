@@ -7,7 +7,7 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private Text coinText;
 
-    private float giftCountDown = 5f;
+    private float giftCountDown = 7f;
 
     private int index = 0;
 
@@ -45,13 +45,13 @@ public class GameManager : Singleton<GameManager>
         {
             yield return new WaitForSeconds(1f);
             giftCountDown--;
-            if (giftCountDown <= 5f)
+            if (giftCountDown <= 7f)
             {
                 LevelManager.Instance.player.isImmune = true;
             }
         }
         LevelManager.Instance.player.isImmune = false;
-        giftCountDown = 5f;
+        giftCountDown = 7f;
     }
 
     public void TakeGift ()
