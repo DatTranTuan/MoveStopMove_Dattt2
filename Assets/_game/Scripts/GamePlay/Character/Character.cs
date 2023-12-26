@@ -142,8 +142,6 @@ public class Character : MonoBehaviour
                 OnTargetEnter(target);
             }
         }
-
-       
     }
 
     public virtual void OnTriggerExit(Collider other)

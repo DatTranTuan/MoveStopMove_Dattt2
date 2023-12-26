@@ -7,6 +7,8 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private Text coinText;
 
+    private float giftCountDown = 5f;
+
     private int index = 0;
 
     public int Index { get => index; set => index = value; }
@@ -35,5 +37,25 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         coinText.text = DataManager.Instance.CoinData.ToString();
+    }
+
+    public IEnumerator GiftEffect()
+    {
+        while (giftCountDown > 0)
+        {
+            yield return new WaitForSeconds(1f);
+            giftCountDown--;
+            if (giftCountDown <= 5f)
+            {
+                LevelManager.Instance.player.gameObject.layer = CacheString.DEFAULT_LAYER;
+            }
+        }
+        LevelManager.Instance.player.gameObject.layer = CacheString.CHARACTER_LAYER;
+        giftCountDown = 5f;
+    }
+
+    public void TakeGift ()
+    {
+        StartCoroutine(GiftEffect());
     }
 }

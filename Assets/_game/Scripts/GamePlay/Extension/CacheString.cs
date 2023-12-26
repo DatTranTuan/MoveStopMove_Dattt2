@@ -25,4 +25,5 @@ public class CacheString : MonoBehaviour
     public static int RADAR_LAYER = 7;
     public static int CHARACTER_LAYER = 9;
     public static int CUP_LAYER = 10;
+    public static int GIFT_LAYER = 11;
 }

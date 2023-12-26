@@ -165,6 +165,13 @@ public class Player : Character
             Cup cp = other.GetComponent<Cup>();
             cp.ChangeMaterial(enterMaterial);
         }
+
+        if (other.gameObject.layer == CacheString.GIFT_LAYER)
+        {
+            other.gameObject.SetActive(false);
+            StopCoroutine(GameManager.Instance.GiftEffect());
+            GameManager.Instance.TakeGift();
+        }
     }
 
     public override void OnTriggerExit(Collider other)
