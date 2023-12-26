@@ -8,7 +8,7 @@ using Lean.Pool;
 public class UIManager : Singleton<UIManager>
 {
     private float countDown = 5f;
-    private bool isContinue;
+    private bool isContinue = true;
 
     [SerializeField] private Text countDownText;
     [SerializeField] private GameObject circleCountDown;
@@ -100,7 +100,6 @@ public class UIManager : Singleton<UIManager>
     private void Start()
     {
         Time.timeScale = 0;
-        
     }
 
     private IEnumerator Countdown()
@@ -143,11 +142,13 @@ public class UIManager : Singleton<UIManager>
 
     public void OnReviveUI()
     {
+        isContinue = false;
+        countDown = 5f;
         reviveCanvas.SetActive(true);
         StopAllCoroutines();
         StartCoroutine(Countdown());
     }
-     public void OnClickCloseUI()
+    public void OnClickCloseUI()
     {
         isContinue = false;
         reviveCanvas.SetActive(false);
@@ -185,7 +186,7 @@ public class UIManager : Singleton<UIManager>
         LevelManager.Instance.player.EquipWeapon();
     }
 
-    public void OnClickClotheShop ()
+    public void OnClickClotheShop()
     {
         menuStartCanvas.SetActive(false);
         clotheShopCanvas.SetActive(true);
@@ -229,7 +230,7 @@ public class UIManager : Singleton<UIManager>
         //ShopManager.Instance.SpawnPantShop();
     }
 
-    public void OnSelectPantButton ()
+    public void OnSelectPantButton()
     {
         ShopManager.Instance.OnClickEquipPantButton();
     }
@@ -250,9 +251,10 @@ public class UIManager : Singleton<UIManager>
     public void RevivePlayer()
     {
         //SceneManager.LoadScene(CacheString.SCENE_NAME);
+        countDown = 5f;
         LevelManager.Instance.player.OnRevive();
         reviveCanvas.SetActive(false);
     }
 
-    
+
 }

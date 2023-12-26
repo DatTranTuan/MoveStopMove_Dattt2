@@ -38,9 +38,11 @@ public class Bot : Character
 
     public void OnInit()
     {
+        InRange = false;
+        this.gameObject.layer = CacheString.CHARACTER_LAYER;
         if (weaponData == null)
         {
-            currentWeaponType = WeaponType.Axe;
+            currentWeaponType = WeaponType.Hammer;
             weaponData = DataManager.Instance.GetWeaponData(currentWeaponType);
         }
 
@@ -122,6 +124,8 @@ public class Bot : Character
 
     public IEnumerator OnDeath()
     {
+        InRange = false;
+        this.gameObject.layer = 0;
         IsAlive = false;
         agent.ResetPath();
         isPlayAble = false;

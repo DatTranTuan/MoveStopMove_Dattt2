@@ -100,6 +100,7 @@ public class Player : Character
 
     public void OnDeath()
     {
+        InRange = false;
         IsAlive = false;
         IsDead = true;
         IsAttack = false;

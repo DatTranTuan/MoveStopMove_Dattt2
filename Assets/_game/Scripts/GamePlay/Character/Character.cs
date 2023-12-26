@@ -46,7 +46,7 @@ public class Character : MonoBehaviour
     private bool isDead;
     private bool isAlive;
     private bool isDance;
-    //private bool inRange; // Later: Check inRange or not 
+    private bool inRange = false; // Later: Check inRange or not 
 
     protected float bulletSpeed = 500f;
     protected List<Bullet> bulletList = new List<Bullet>();
@@ -69,6 +69,7 @@ public class Character : MonoBehaviour
     public Character MainTarget { get => mainTarget; set => mainTarget = value; }
     public List<Character> OtherTarget { get => otherTarget; set => otherTarget = value; }
     public bool IsDance { get => isDance; set => isDance = value; }
+    public bool InRange { get => inRange; set => inRange = value; }
 
     //public Weapon CurrentWeapon { get => currentWeapon; set => currentWeapon = value; }
 
@@ -132,7 +133,8 @@ public class Character : MonoBehaviour
 
     public virtual void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == CacheString.CHARACTER_LAYER)
+        inRange = true;
+        if (other.gameObject.layer == CacheString.CHARACTER_LAYER && inRange == true)
         {
             Character target = other.GetComponent<Character>();
             if (target != this)
@@ -146,7 +148,8 @@ public class Character : MonoBehaviour
 
     public virtual void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == CacheString.CHARACTER_LAYER)
+        inRange = false;
+        if (other.gameObject.layer == CacheString.CHARACTER_LAYER && inRange == false)
         {
             Character target = other.GetComponent<Character>();
             OnTargetExit(target);
